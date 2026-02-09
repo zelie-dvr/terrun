@@ -14,7 +14,132 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          level: number
+          monthly_goal_km: number | null
+          total_distance_km: number
+          total_runs: number
+          total_time_seconds: number
+          total_xp: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          level?: number
+          monthly_goal_km?: number | null
+          total_distance_km?: number
+          total_runs?: number
+          total_time_seconds?: number
+          total_xp?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          level?: number
+          monthly_goal_km?: number | null
+          total_distance_km?: number
+          total_runs?: number
+          total_time_seconds?: number
+          total_xp?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      quest_progress: {
+        Row: {
+          completed: boolean
+          created_at: string
+          id: string
+          progress: number
+          quest_date: string
+          quest_id: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          progress?: number
+          quest_date?: string
+          quest_id: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          id?: string
+          progress?: number
+          quest_date?: string
+          quest_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      runs: {
+        Row: {
+          avg_pace: string | null
+          created_at: string
+          description: string | null
+          distance_km: number
+          duration_seconds: number
+          gps_trace: Json | null
+          id: string
+          is_public: boolean
+          mode: string
+          territory_km2: number | null
+          title: string | null
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          avg_pace?: string | null
+          created_at?: string
+          description?: string | null
+          distance_km?: number
+          duration_seconds?: number
+          gps_trace?: Json | null
+          id?: string
+          is_public?: boolean
+          mode?: string
+          territory_km2?: number | null
+          title?: string | null
+          user_id: string
+          xp_earned?: number
+        }
+        Update: {
+          avg_pace?: string | null
+          created_at?: string
+          description?: string | null
+          distance_km?: number
+          duration_seconds?: number
+          gps_trace?: Json | null
+          id?: string
+          is_public?: boolean
+          mode?: string
+          territory_km2?: number | null
+          title?: string | null
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,5 +1,5 @@
 import { MobileLayout } from "@/components/layout/MobileLayout";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Target, ChevronDown, CheckSquare, ListTodo, MapPin, Signal, Play, Pause, Square } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -24,8 +24,35 @@ export default function Run() {
   const [showQuests, setShowQuests] = useState(false);
   const [activeQuestTab, setActiveQuestTab] = useState<"quests" | "challenges">("quests");
   
-  // Simulated run stats
-  const [stats, setStats] = useState({ pace: "0'00\"", time: "00.00", distance: 0 });
+  const [stats, setStats] = useState({ pace: "0'00\"", time: "00:00", distance: 0 });
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Timer logic
+  useEffect(() => {
+    if (runState === "running") {
+      timerRef.current = setInterval(() => {
+        setElapsedSeconds((s) => {
+          const newS = s + 1;
+          const mins = Math.floor(newS / 60);
+          const secs = newS % 60;
+          const dist = newS * 0.003; // ~10.8 km/h simulated
+          const paceTotal = dist > 0 ? newS / 60 / dist : 0;
+          const pMins = Math.floor(paceTotal);
+          const pSecs = Math.round((paceTotal - pMins) * 60);
+          setStats({
+            time: `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`,
+            distance: dist,
+            pace: `${pMins}'${String(pSecs).padStart(2, "0")}"`,
+          });
+          return newS;
+        });
+      }, 1000);
+    } else if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [runState]);
 
   if (runState === "mode-select") {
     return (
@@ -206,7 +233,7 @@ export default function Run() {
                   <Play className="w-5 h-5 text-foreground fill-current ml-0.5" />
                 </button>
                 <button
-                  onClick={() => navigate("/run/summary")}
+                  onClick={() => navigate("/run/summary", { state: { distance: stats.distance, time: stats.time, pace: stats.pace, durationSeconds: elapsedSeconds } })}
                   className="w-14 h-14 rounded-full bg-destructive flex items-center justify-center shadow-lg"
                 >
                   <Square className="w-5 h-5 text-white fill-current" />

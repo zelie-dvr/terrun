@@ -1,9 +1,25 @@
 import { Bell, ChevronDown, Pencil, ArrowUpRight, MapPin } from "lucide-react";
 import { MobileLayout } from "@/components/layout/MobileLayout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Home() {
+  const { user } = useAuth();
   const [period, setPeriod] = useState("Ce mois");
+  const [profile, setProfile] = useState<any>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from("profiles")
+      .select("*")
+      .eq("user_id", user.id)
+      .maybeSingle()
+      .then(({ data }) => setProfile(data));
+  }, [user]);
+
+  const firstName = profile?.first_name || user?.user_metadata?.first_name || "Runner";
 
   return (
     <MobileLayout>
@@ -15,7 +31,7 @@ export default function Home() {
               <span className="text-lg">👩</span>
             </div>
             <span className="font-medium">
-              Salut, <span className="font-semibold">Marie</span> 👋
+              Salut, <span className="font-semibold">{firstName}</span> 👋
             </span>
           </div>
           <button className="relative p-2">
@@ -37,15 +53,15 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="stat-value">12.4 KM</p>
+              <p className="stat-value">{profile ? `${Number(profile.total_distance_km).toFixed(1)} KM` : "—"}</p>
               <p className="stat-label">Ce mois-ci</p>
             </div>
             <div>
-              <p className="stat-value">4 RUNS</p>
+              <p className="stat-value">{profile ? `${profile.total_runs} RUNS` : "—"}</p>
               <p className="stat-label">Total</p>
             </div>
             <div>
-              <p className="stat-value">2H:30M</p>
+              <p className="stat-value">{profile ? `${Math.floor(profile.total_time_seconds / 3600)}H:${String(Math.floor((profile.total_time_seconds % 3600) / 60)).padStart(2, "0")}M` : "—"}</p>
               <p className="stat-label">Temps d'activité</p>
             </div>
           </div>
@@ -65,9 +81,9 @@ export default function Home() {
               <span className="text-sm">🎯</span>
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium mb-1">18/50 KM</p>
+              <p className="text-sm font-medium mb-1">{profile ? `${Number(profile.total_distance_km).toFixed(0)}/${Number(profile.monthly_goal_km).toFixed(0)} KM` : "—"}</p>
               <div className="terrun-progress">
-                <div className="terrun-progress-bar" style={{ width: "36%" }} />
+                <div className="terrun-progress-bar" style={{ width: `${profile ? Math.min(100, (Number(profile.total_distance_km) / Number(profile.monthly_goal_km)) * 100) : 0}%` }} />
               </div>
             </div>
           </div>

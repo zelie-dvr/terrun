@@ -1,5 +1,7 @@
 import { MobileLayout } from "@/components/layout/MobileLayout";
 import { ShoppingBag, Sparkles, Zap, Palette } from "lucide-react";
+import { Flame } from "lucide-react";
+
 
 const categories = [
   { id: "boosts", name: "Boosts", icon: Zap, count: 12 },
@@ -8,10 +10,10 @@ const categories = [
 ];
 
 const featuredItems = [
-  { id: 1, name: "Aura Dorée", price: 500, emoji: "✨", type: "cosmetic" },
-  { id: 2, name: "Boost XP x2", price: 200, emoji: "⚡", type: "boost" },
-  { id: 3, name: "Trail Néon", price: 750, emoji: "🌈", type: "cosmetic" },
-  { id: 4, name: "Avatar Pro", price: 1000, emoji: "👤", type: "special" },
+  { id: 1, name: "Bonnet Alien", price: 500, img: "public/images/boutique_1.png", type: "cosmetic" },
+  { id: 2, name: "Chapeau blanc", price: 200, img: "public/images/boutique_2.png", type: "boost" },
+  { id: 3, name: "Haut monstre", price: 750, img: "public/images/boutique_3.png", type: "cosmetic" },
+  { id: 4, name: "Pantalon bleu", price: 1000, img: "public/images/boutique_4.png", type: "special" },
 ];
 
 export default function Shop() {
@@ -23,7 +25,13 @@ export default function Shop() {
           <h1 className="font-display text-3xl">BOUTIQUE</h1>
           <div className="flex items-center gap-2 bg-primary rounded-full px-4 py-2">
             <span className="font-display">2,450</span>
-            <span>💎</span>
+            <span>
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/408/408472.png"
+                    alt="diamond"
+                    className="w-4 h-4"
+                  />
+            </span>
           </div>
         </header>
 
@@ -45,19 +53,29 @@ export default function Shop() {
         <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="section-title">EN VEDETTE</h2>
-            <button className="text-sm text-muted-foreground">Voir tout</button>
+            <button className="text-sm text-gray-500 font-medium hover:underline">Voir tout</button>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             {featuredItems.map((item) => (
               <div key={item.id} className="terrun-card">
                 <div className="w-full aspect-square bg-muted rounded-xl flex items-center justify-center text-4xl mb-3">
-                  {item.emoji}
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className="object-contain"
+                />
                 </div>
+                
                 <h3 className="font-medium text-sm mb-1">{item.name}</h3>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-display flex items-center gap-1">
-                    {item.price} 💎
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/408/408472.png"
+                    alt="diamond"
+                    className="w-4 h-4"
+                  />
+                    {item.price}
                   </span>
                   <button className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">
                     <ShoppingBag className="w-4 h-4 text-background" />
@@ -70,8 +88,13 @@ export default function Shop() {
 
         {/* Coming soon banner */}
         <div className="mt-6 bg-gradient-to-r from-primary to-terrun-lime-light rounded-2xl p-4 text-center">
-          <p className="font-display text-lg">🚀 NOUVEAUTÉS BIENTÔT</p>
-          <p className="text-sm">Plus de cosmétiques et boosts arrivent !</p>
+          <p className="font-display text-lg">
+            <span className="align-middle inline-block mr-2">
+              <Flame className="w-5 h-5 text-black" />
+            </span>
+            NOUVEAUTÉS BIENTÔT
+          </p>
+          <p className="text-sm mt-1">Plus de cosmétiques et boosts arrivent !</p>
         </div>
       </div>
     </MobileLayout>

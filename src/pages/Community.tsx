@@ -2,6 +2,7 @@ import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useState } from "react";
 import { Search, MessageCircle, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Trophy } from "lucide-react";
 
 type Tab = "amis" | "clan" | "classement";
 type RankingTab = "solo" | "clans" | "entreprises";
@@ -15,18 +16,18 @@ const friends = [
 ];
 
 const topContributors = [
-  { rank: 1, name: "Pôle marketing", points: 1200, medal: "🥇" },
-  { rank: 2, name: "Pôle comm.", points: 980, medal: "🥈" },
-  { rank: 3, name: "Pôle graphique", points: 850, medal: "🥉" },
+  { rank: 1, name: "Pôle marketing", points: 1200, medal: "dist/images/Medaille1.svg" },
+  { rank: 2, name: "Pôle communication", points: 980, medal: "dist/images/Medaille2.svg" },
+  { rank: 3, name: "Pôle graphique", points: 850, medal: "dist/images/Medaille3.svg" },
 ];
 
 const soloRanking = [
   { rank: 1, name: "Champion", xp: 15400, avatar: "👩" },
   { rank: 2, name: "Challenger", xp: 14200, avatar: "👩" },
   { rank: 3, name: "Outsider", xp: 13800, avatar: "👩" },
-  { rank: 4, name: "Lisa", xp: 12500 },
-  { rank: 5, name: "Zélie", xp: 11900 },
-  { rank: 6, name: "Aurélie", xp: 11200 },
+  { rank: 4, name: "Sacha", xp: 12500 },
+  { rank: 5, name: "Perrine", xp: 11900 },
+  { rank: 6, name: "Maxime", xp: 11200 },
 ];
 
 export default function Community() {
@@ -90,11 +91,19 @@ function FriendsTab() {
         {friends.map((friend) => (
           <div
             key={friend.name}
-            className="flex items-center justify-between p-3 rounded-xl hover:bg-muted transition-colors"
+            className="flex items-center justify-between p-3 hover:bg-muted transition-colors border-b border-muted-foreground/20 last:border-b-0"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-muted-foreground/20 flex items-center justify-center">
-                <span className="text-muted-foreground">👤</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-6 h-6 text-primary-foreground"
+              >
+                <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Z" />
+                <path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6v1H4v-1Z" />
+              </svg>
               </div>
               <div>
                 <p className="font-medium text-sm">{friend.name}</p>
@@ -142,9 +151,17 @@ function ClanTab() {
           <p className="text-sm text-muted-foreground mb-2">
             Challenge en cours : objectif mensuel
           </p>
-          <div className="terrun-progress mb-2">
-            <div className="terrun-progress-bar" style={{ width: "75%" }} />
+          <div className="mb-2">
+            {/* Jauge fond (100%) */}
+            <div className="w-full h-3 bg-white/100 rounded-full overflow-hidden">
+              {/* Jauge progression */}
+              <div
+                className="h-full bg-primary rounded-full transition-all"
+                style={{ width: "75%" }}
+              />
+            </div>
           </div>
+
           <div className="flex justify-between items-center">
             <span className="text-sm font-medium bg-primary px-2 py-0.5 rounded">
               75%
@@ -164,24 +181,18 @@ function ClanTab() {
               className="flex items-center justify-between p-3 bg-card rounded-xl border border-border"
             >
               <div className="flex items-center gap-3">
-                <span className="text-xl">{contributor.medal}</span>
+              <img
+                src={contributor.medal}
+                alt="medal"
+                className="w-6 h-6"
+              />
+
                 <span className="font-medium">{contributor.name}</span>
               </div>
               <span className="font-display text-lg">{contributor.points} pts</span>
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Last message */}
-      <div className="flex items-center gap-3 p-3 bg-muted rounded-xl">
-        <MessageCircle className="w-5 h-5 text-muted-foreground" />
-        <p className="text-sm">
-          <span className="font-medium">Dernier message : </span>
-          <span className="text-muted-foreground">
-            "On court à 18h ?" - Romain
-          </span>
-        </p>
       </div>
     </div>
   );
@@ -216,51 +227,99 @@ function RankingTab({
 
       {/* Season countdown */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span>⏳</span>
+      <img
+        src="dist/images/icon_sablier.svg"
+        alt="Couronne argent"
+        className="w-7 h-7 drop-shadow-lg"
+      />
         <span>
           Fin de saison dans : <strong className="text-foreground">7j 8h 46mn</strong>
         </span>
       </div>
 
-      {/* Podium */}
-      <div className="flex items-end justify-center gap-2 py-4">
-        {/* 2nd place */}
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 rounded-full bg-terrun-silver/30 border-2 border-terrun-silver flex items-center justify-center mb-2">
-            <span className="text-2xl">👩</span>
-          </div>
-          <div className="bg-muted-foreground/20 rounded-t-xl px-4 py-3 text-center h-20 w-20 flex flex-col justify-end">
-            <p className="font-display text-lg">#2</p>
-            <p className="text-xs">Challenger</p>
-            <p className="text-xs text-muted-foreground">14,200 XP</p>
-          </div>
-        </div>
+      {/* Podium amélioré */}
+<div className="flex items-end justify-center gap-3 py-6">
+  {/* 2nd place */}
+  <div className="flex flex-col items-center">
+    {/* Couronne argent */}
+    <div className="mb-2">
+      <img
+        src="dist/images/Couronne-02.svg"
+        alt="Couronne argent"
+        className="w-15 h-10 drop-shadow-lg"
+      />
+    </div>
+    
+    {/* Avatar */}
+    <div className="w-20 h-20 rounded-full bg-gradient-to-b from-gray-200 to-gray-300 border-4 border-gray-400 flex items-center justify-center mb-3 shadow-lg">
+    <img
+      src="dist/images/avatar2.png"
+      alt="medal"
+    />
+    </div>
+    
+    {/* Podium box */}
+    <div className="bg-gradient-to-b from-gray-200 to-gray-300 rounded-t-2xl px-4 py-4 text-center w-24 h-32 flex flex-col items-center justify-end shadow-xl border-t-4 border-gray-400">
+      <p className="font-display text-3xl font-bold text-gray-700">#2</p>
+      <p className="text-xs font-semibold mt-1 whitespace-nowrap">Challenger</p>
+      <p className="text-xs text-gray-600 mt-1 font-medium whitespace-nowrap">14,200 XP</p>
+    </div>
+  </div>
 
-        {/* 1st place */}
-        <div className="flex flex-col items-center -mb-4">
-          <span className="text-2xl mb-1">👑</span>
-          <div className="w-20 h-20 rounded-full bg-primary/30 border-4 border-primary flex items-center justify-center mb-2">
-            <span className="text-3xl">👩</span>
-          </div>
-          <div className="bg-foreground text-background rounded-t-xl px-6 py-4 text-center h-28 w-24 flex flex-col justify-end">
-            <p className="font-display text-2xl">#1</p>
-            <p className="text-xs font-medium">Champion</p>
-            <p className="text-sm text-primary">15,400 XP</p>
-          </div>
-        </div>
-
-        {/* 3rd place */}
-        <div className="flex flex-col items-center">
-          <div className="w-16 h-16 rounded-full bg-terrun-bronze/30 border-2 border-terrun-bronze flex items-center justify-center mb-2">
-            <span className="text-2xl">👩</span>
-          </div>
-          <div className="bg-terrun-bronze/20 rounded-t-xl px-4 py-3 text-center h-16 w-20 flex flex-col justify-end">
-            <p className="font-display text-lg">#3</p>
-            <p className="text-xs">Outsider</p>
-            <p className="text-xs text-muted-foreground">13,800 XP</p>
-          </div>
-        </div>
+  {/* 1st place */}
+  <div className="flex flex-col items-center -mb-6">
+    {/* Couronne or */}
+      <div className="mb-2">
+        <img
+          src="dist/images/Couronne-01.svg"
+          alt="Couronne argent"
+          className="w-15 h-10 drop-shadow-lg"
+        />
       </div>
+    
+    {/* Avatar */}
+    <div className="w-24 h-24 rounded-full bg-gradient-to-b from-yellow-200 via-yellow-300 to-yellow-400 border-4 border-primary flex items-center justify-center mb-3 shadow-2xl ring-4 ring-primary/30">
+    <img
+      src="dist/images/individual-avatar.png"
+      alt="medal"
+    />
+    </div>
+    
+    {/* Podium box */}
+    <div className="bg-gradient-to-b from-foreground via-gray-900 to-black text-background rounded-t-2xl px-4 py-5 text-center w-28 h-40 flex flex-col items-center justify-end shadow-2xl border-t-4 border-primary">
+      <p className="font-display text-4xl font-bold text-primary">#1</p>
+      <p className="text-sm font-bold mt-1 whitespace-nowrap">Champion</p>
+      <p className="text-sm text-primary font-bold mt-1 whitespace-nowrap">15,400 XP</p>
+    </div>
+  </div>
+
+  {/* 3rd place */}
+  <div className="flex flex-col items-center">
+    {/* Couronne bronze */}
+<div className="mb-2">
+  <img
+    src="dist/images/Couronne-03.svg"
+    alt="Couronne argent"
+    className="w-15 h-10 drop-shadow-lg"
+  />
+</div>
+    
+    {/* Avatar */}
+    <div className="w-20 h-20 rounded-full bg-gradient-to-b from-orange-200 to-orange-300 border-4 border-orange-400 flex items-center justify-center mb-3 shadow-lg">
+    <img
+      src="dist/images/avatar2.png"
+      alt="medal"
+    />
+    </div>
+    
+    {/* Podium box */}
+    <div className="bg-gradient-to-b from-orange-200 to-orange-300 rounded-t-2xl px-3 py-3 text-center w-24 h-24 flex flex-col items-center justify-end shadow-xl border-t-4 border-orange-400">
+      <p className="font-display text-2xl font-bold text-orange-800 leading-none">#3</p>
+      <p className="text-[10px] font-semibold mt-1 whitespace-nowrap leading-tight">Outsider</p>
+      <p className="text-[10px] text-orange-700 mt-0.5 font-medium whitespace-nowrap leading-tight">13,800 XP</p>
+    </div>
+  </div>
+</div>
 
       {/* Rest of ranking */}
       <div className="space-y-2">

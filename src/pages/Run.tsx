@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 type RunState = "mode-select" | "ready" | "running" | "paused";
 
 const modes = [
-  { id: "individual", name: "Individuel", avatar: "🏃‍♂️" },
-  { id: "team", name: "Équipe", avatar: "👥", disabled: true },
+  { id: "individual", name: "Individuel", image: "/images/individual-avatar.png" },
+  { id: "team", name: "Équipe", image: "/images/team-avatar.png" },
 ];
 
 const dailyQuests = [
@@ -27,6 +27,12 @@ export default function Run() {
   const [stats, setStats] = useState({ pace: "0'00\"", time: "00:00", distance: 0 });
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const waveIndividual =
+  "M0,210L120,220C240,230,480,250,720,250C960,250,1200,230,1320,220L1440,210L1440,320L0,320Z";
+
+const waveTeam =
+  "M0,200L160,210C320,220,560,240,800,240C1040,240,1240,220,1360,210L1440,200L1440,320L0,320Z";
 
   // Timer logic
   useEffect(() => {
@@ -57,60 +63,118 @@ export default function Run() {
   if (runState === "mode-select") {
     return (
       <MobileLayout hideNav>
-        <div className="min-h-screen bg-gradient-to-b from-terrun-lime-light to-background p-4 animate-fade-in">
+        
+        <div className="min-h-screen bg-gradient-to-b from-[#fff] to-[#e9ee9d] to-white p-6 animate-fade-in flex flex-col relative overflow-hidden">
+          {/* Back button */}
           <button
             onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full bg-background flex items-center justify-center mb-8"
+            className="w-10 h-10 flex items-center justify-center mb-8 self-start"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-6 h-6 text-foreground" strokeWidth={2.5} />
           </button>
 
-          <h1 className="font-display text-3xl text-center mb-8">
+          {/* Title */}
+          <h1 className="font-display text-3xl text-center mb-16 leading-tight tracking-tight">
             CHOISISSEZ VOTRE
             <br />
             MODE DE JEU
           </h1>
 
-          {/* Mode carousel */}
-          <div className="flex justify-center gap-4 mb-8">
-            {modes.map((mode) => (
-              <button
-                key={mode.id}
-                onClick={() => !mode.disabled && setSelectedMode(mode.id)}
-                disabled={mode.disabled}
-                className={cn(
-                  "flex flex-col items-center transition-all",
-                  mode.disabled && "opacity-50"
-                )}
-              >
-                <div
-                  className={cn(
-                    "w-32 h-32 rounded-full flex items-center justify-center text-5xl mb-3 transition-all",
-                    selectedMode === mode.id
-                      ? "bg-primary border-4 border-foreground scale-110"
-                      : "bg-primary/30 border-2 border-primary"
-                  )}
-                >
-                  {mode.avatar}
-                </div>
-                <span className="font-display text-xl">{mode.name}</span>
-              </button>
-            ))}
+          {/* Mode carousel - centered with space for both bubbles */}
+          <div className="flex-1 flex items-center justify-center mb-8">
+            <div className="relative w-full max-w-md h-64">
+              {modes.map((mode, index) => {
+                const isActive = selectedMode === mode.id;
+                
+                // Calculate position: active centered, inactive offset to sides
+                const leftPosition = isActive 
+                  ? "50%" 
+                  : index === 0 
+                    ? "20%" 
+                    : "80%";
+
+                return (
+                  <button
+                    key={mode.id}
+                    onClick={() => setSelectedMode(mode.id)}
+                    className="absolute top-1/2 transition-all duration-500 ease-in-out"
+                    style={{
+                      left: leftPosition,
+                      transform: `translate(-50%, -50%) scale(${isActive ? 1 : 0.7})`,
+                      opacity: isActive ? 1 : 0.5,
+                      zIndex: isActive ? 10 : 1,
+                    }}
+                  >
+                    {/* Avatar circle */}
+                    <div
+                      className={cn(
+                        "w-40 h-40 rounded-full flex items-center justify-center overflow-hidden transition-all duration-500",
+                        isActive
+                          ? "bg-white border-[6px] border-[#C4D600] shadow-2xl"
+                          : "bg-white/60 border-4 border-[#C4D600]/40"
+                      )}
+                    >
+                      <img 
+                        src={mode.image} 
+                        alt={mode.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* Mode name - only show for active */}
+                    {isActive && (
+                      <div className="text-center">
+                        <span className="font-display text-2xl font-bold">{mode.name}</span>
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Set objective */}
-          <button className="mx-auto flex items-center gap-2 border-2 border-foreground rounded-full px-6 py-3 mb-8">
-            <Target className="w-4 h-4" />
-            <span className="text-sm font-medium">Fixer un objectif</span>
-          </button>
+          {/* Bottom section */}
+          <div className="space-y-6 pb-8 z-10">
+            {/* Set objective button */}
+            <button className="w-full max-w-xs mx-auto flex items-center justify-center gap-2 border-2 border-foreground rounded-full px-6 py-3 bg-white">
+              <Target className="w-5 h-5" />
+              <span className="text-base font-semibold">Fixer un objectif</span>
+            </button>
 
-          {/* Start button */}
-          <button
-            onClick={() => setRunState("ready")}
-            className="terrun-btn w-full max-w-xs mx-auto block"
-          >
-            COMMENCER MAINTENANT
-          </button>
+            {/* Start button */}
+            <button
+              onClick={() => setRunState("ready")}
+              className="terrun-btn w-full max-w-xs mx-auto block text-lg font-bold py-4"
+            >
+              COMMENCER MAINTENANT
+            </button>
+          </div>
+          <svg
+  key={selectedMode}
+  className="absolute top-0 left-0 w-full h-screen z-0"
+  viewBox="0 0 1140 320"
+  preserveAspectRatio="none"
+>
+  <path fill="#FFFFFF">
+    <animate
+      attributeName="d"
+      dur="0.6s"
+      calcMode="spline"
+      keySplines="0.4 0 0.2 1"
+      keyTimes="0;1"
+      fill="freeze"
+      values={
+        selectedMode === "individual"
+          ? `${waveTeam};${waveIndividual}`
+          : `${waveIndividual};${waveTeam}`
+      }
+    />
+  </path>
+</svg>
+
+
+
+
         </div>
       </MobileLayout>
     );

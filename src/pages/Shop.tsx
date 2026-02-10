@@ -10,10 +10,10 @@ const categories = [
 ];
 
 const featuredItems = [
-  { id: 1, name: "Bonnet Alien", price: 500, img: "public/images/boutique_1.png", type: "cosmetic" },
-  { id: 2, name: "Chapeau blanc", price: 200, img: "public/images/boutique_2.png", type: "boost" },
-  { id: 3, name: "Haut monstre", price: 750, img: "public/images/boutique_3.png", type: "cosmetic" },
-  { id: 4, name: "Pantalon bleu", price: 1000, img: "public/images/boutique_4.png", type: "special" },
+  { id: 1, name: "Bonnet Alien", price: 500, img: "dist/images/boutique_1.png", type: "cosmetic" },
+  { id: 2, name: "Chapeau blanc", price: 200, img: "dist/images/boutique_2.png", type: "boost" },
+  { id: 3, name: "Haut monstre", price: 750, img: "dist/images/boutique_3.png", type: "cosmetic" },
+  { id: 4, name: "Pantalon bleu", price: 1000, img: "dist/images/boutique_4.png", type: "special" },
 ];
 
 export default function Shop() {

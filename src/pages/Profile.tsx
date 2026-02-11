@@ -41,6 +41,14 @@ export default function Profile() {
     return <TeamStats onBack={() => setView("main")} />;
   }
 
+  const profile = {
+    first_name: "Pierre",
+    total_distance_km: 85, // Matches "Objectif du mois" progress
+    total_runs: 42,
+    total_time_seconds: 153000, // approx 42.5 hours
+    monthly_goal_km: 100
+  };
+
   return (
     <MobileLayout>
       <div className="p-4 animate-fade-in">
@@ -97,57 +105,62 @@ export default function Profile() {
           <div className="terrun-badge">
             <span>ABONNÉS</span>
             <span className="font-bold">10</span>
-            <span>👥</span>
           </div>
           <div className="terrun-badge">
             <span>NIV.</span>
             <span className="font-bold">6</span>
-            <Trophy className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="space-y-2 mb-6">
-          <div className="terrun-badge justify-between w-full">
-            <div className="flex items-center gap-2">
-              <span>OBJECTIF DU MOIS</span>
-              <span>🏃</span>
+        
+        <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center">
+            <img src="dist/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
             </div>
-            <span className="font-display text-lg">50 KM</span>
+            <div className="flex-1">
+              <p className="text-sm font-medium mb-1">{Number(profile.total_distance_km).toFixed(0)}/{Number(profile.monthly_goal_km).toFixed(0)} KM</p>
+              <div className="terrun-progress">
+                <div className="terrun-progress-bar" style={{ width: `${Math.min(100, (Number(profile.total_distance_km) / Number(profile.monthly_goal_km)) * 100)}%` }} />
+              </div>
+            </div>
           </div>
-          <div className="terrun-badge justify-between w-full">
+          <div className="terrun-badge2 mb-3 mt-2">
             <span>DISTANCE ACCUMULÉE</span>
-            <span className="font-display text-lg">45 KM</span>
+            <span className="font-display text-lg">132 KM</span>
           </div>
-        </div>
+        
 
         {/* Progress section */}
         <div className="terrun-card">
           <h2 className="font-display text-xl mb-4">PROGRÈS</h2>
 
-          <div className="flex gap-3 mb-4">
-            <div className="flex-1 bg-primary rounded-xl p-3 flex items-center gap-2 relative">
-              <Trophy className="w-6 h-6" />
-              <span className="font-display text-lg">+30</span>
-              <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full" />
-            </div>
-            <div className="flex-1 bg-muted rounded-xl p-3 flex items-center gap-2 border border-border">
-              <span className="text-xl">🏔️</span>
-              <span className="font-display text-lg">+30</span>
-            </div>
+         {/* Jauge XP Niveau actuel */}
+        <div className="terrun-badge justify-between w-full mb-3 relative overflow-hidden">
+          {/* Jauge verte en arrière-plan à 70% par exemple */}
+          <div className="absolute inset-0 w-[70%] bg-gradient-to-r from-[#fcfcfc] to-[#C6D300] rounded-full"></div>
+          
+          {/* Contenu par-dessus la jauge */}
+          <div className="relative z-10 flex items-center gap-2">
+            <span>NIVEAU 6</span>
           </div>
+          <span className="relative z-10 font-display text-lg">700/1000 XP</span>
+        </div>
 
           <button
             onClick={() => setView("solo")}
             className="w-full flex items-center justify-between p-3 mb-2 hover:bg-muted rounded-xl transition-colors"
           >
             <div className="flex items-center gap-2">
-              <span>🏃</span>
-              <span className="font-display text-lg">SOLO</span>
+              <span>
+              <img
+              src="dist/images/icon-solo.svg"
+              alt="Carte interactive"
+              className="block ml-1 w-4 object-cover"
+              />
+              </span>
+              <span className="font-display text-lg">INDIVIDUEL</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-24 terrun-progress">
-                <div className="terrun-progress-bar" style={{ width: "70%" }} />
-              </div>
               <ChevronRight className="w-5 h-5" />
             </div>
           </button>
@@ -157,13 +170,16 @@ export default function Profile() {
             className="w-full flex items-center justify-between p-3 hover:bg-muted rounded-xl transition-colors"
           >
             <div className="flex items-center gap-2">
-              <span>👥</span>
-              <span className="font-display text-lg">TEAM</span>
+              <span>
+              <img
+              src="dist/images/icon-team.svg"
+              alt="Carte interactive"
+              className="block w-5 object-cover"
+            />
+              </span>
+              <span className="font-display text-lg">ÉQUIPE</span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-24 terrun-progress">
-                <div className="terrun-progress-bar" style={{ width: "45%" }} />
-              </div>
               <ChevronRight className="w-5 h-5" />
             </div>
           </button>

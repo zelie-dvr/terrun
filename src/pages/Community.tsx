@@ -1,6 +1,6 @@
 import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useState } from "react";
-import { Search, MessageCircle, Trophy, ChevronDown } from "lucide-react";
+import { Search, MessageCircle, Trophy, ChevronDown, UserPlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 
@@ -8,11 +8,41 @@ type Tab = "amis" | "clan" | "classement";
 type RankingTab = "solo" | "clans" | "entreprises";
 
 const friends = [
-  { name: "Romain", message: "On court à 18h ?", status: "online" },
-  { name: "Sophie", message: "Envoyé mardi", status: "away" },
-  { name: "Élise", message: "Vus", status: "away" },
-  { name: "Malo", message: "Vus", status: "offline" },
-  { name: "Maxime", message: "Envoyé Lundi", status: "away" },
+  {
+    name: "Romain",
+    statusText: "En plein raid sur Toulon",
+    statusColor: "text-[#D7FF00]",
+    isOnline: true,
+    hasUnread: true
+  },
+  {
+    name: "Sophie",
+    statusText: "Objectif 50km complété !",
+    statusColor: "text-muted-foreground",
+    isOnline: false,
+    hasUnread: false
+  },
+  {
+    name: "Élise",
+    statusText: "En ligne",
+    statusColor: "text-primary",
+    isOnline: true,
+    hasUnread: false
+  },
+  {
+    name: "Malo",
+    statusText: "Hors-ligne (depuis 2h)",
+    statusColor: "text-muted-foreground/50",
+    isOnline: false,
+    hasUnread: false
+  },
+  {
+    name: "Maxime",
+    statusText: "En ligne",
+    statusColor: "text-primary",
+    isOnline: true,
+    hasUnread: false
+  },
 ];
 
 const topContributors = [
@@ -150,14 +180,19 @@ export default function Community() {
 function FriendsTab() {
   return (
     <div className="space-y-4">
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="Rechercher..."
-          className="w-full bg-muted rounded-full py-3 pl-12 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary"
-        />
+      {/* Search & Add */}
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Rechercher..."
+            className="w-full bg-muted rounded-full py-3 pl-12 pr-4 text-sm outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+        <button className="w-11 h-11 rounded-full bg-muted flex items-center justify-center text-foreground hover:bg-[#D7FF00] hover:text-black transition-colors shadow-sm">
+          <UserPlus className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Friends list */}
@@ -165,48 +200,49 @@ function FriendsTab() {
         {friends.map((friend) => (
           <div
             key={friend.name}
-            className="flex items-center justify-between p-3 hover:bg-muted transition-colors border-b border-muted-foreground/20 last:border-b-0"
+            className="flex items-center justify-between p-3 hover:bg-muted transition-colors border-b border-muted-foreground/10 last:border-b-0 rounded-lg"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-muted-foreground/20 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6 text-primary-foreground"
-                >
-                  <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5Z" />
-                  <path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6v1H4v-1Z" />
-                </svg>
+              {/* Avatar */}
+              <div className="relative">
+                <div className="w-10 h-10 rounded-full bg-muted-foreground/20 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${friend.name}`}
+                    alt={friend.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {friend.isOnline && (
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#D7FF00] rounded-full border-2 border-background shadow-[0_0_8px_#D7FF00]" />
+                )}
               </div>
+
+              {/* Info */}
               <div>
                 <p className="font-medium text-sm">{friend.name}</p>
-                <p className="text-xs text-muted-foreground">{friend.message}</p>
+                <div className="flex items-center gap-1.5">
+                  {friend.name === "Sophie" && (
+                    <div className="w-3 h-3 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <svg className="w-2 h-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  )}
+                  <p className={cn("text-xs font-medium", friend.statusColor)}>
+                    {friend.statusText}
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span
-                className={cn(
-                  "text-xs",
-                  friend.status === "online"
-                    ? "text-primary"
-                    : friend.status === "away"
-                      ? "text-muted-foreground"
-                      : "text-muted-foreground/50"
-                )}
-              >
-                {friend.status === "online"
-                  ? "En ligne"
-                  : friend.status === "away"
-                    ? "Absent(e)"
-                    : "Hors-ligne"}
-              </span>
-              <div className="relative">
-                <MessageCircle className="w-5 h-5" />
-                {friend.status === "online" && (
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full" />
-                )}
-              </div>
+
+            {/* Action */}
+            <div className="relative p-2 hover:bg-black/5 rounded-full transition-colors cursor-pointer">
+              <MessageCircle className="w-5 h-5 text-muted-foreground" />
+              {friend.hasUnread && (
+                <div className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-background flex items-center justify-center">
+                  <span className="sr-only">New message</span>
+                </div>
+              )}
             </div>
           </div>
         ))}

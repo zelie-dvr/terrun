@@ -28,7 +28,7 @@ export default function RunSummary() {
   const durationSeconds = runData?.durationSeconds ?? 0;
 
   const xpEarned = Math.round(distance * 50 + durationSeconds * 0.1);
-  const territory = (distance * 0.02).toFixed(4);
+  const territory = (distance * 0.02).toFixed(2);
 
   const handleSave = async () => {
     if (!user) {
@@ -53,8 +53,7 @@ export default function RunSummary() {
       toast.error("Erreur lors de la sauvegarde");
       console.error(error);
     } else {
-      toast.success(`+${xpEarned} XP gagnés !`);
-      navigate("/");
+      navigate(`/?saved=true&xp=${xpEarned}`);
     }
     setSaving(false);
   };
@@ -119,7 +118,7 @@ export default function RunSummary() {
 
         {/* Visibility toggle */}
         <div className="flex items-center justify-between mb-6">
-          <span className="text-sm">Visible pour la communauté</span>
+          <span className="text-sm">Visible sur mon profil</span>
           <button
             onClick={() => setIsPublic(!isPublic)}
             className={`w-12 h-6 rounded-full transition-colors ${isPublic ? "bg-primary" : "bg-muted"}`}

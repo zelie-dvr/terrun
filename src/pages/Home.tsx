@@ -3,10 +3,49 @@ import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useState, useEffect, ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function Home() {
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [period, setPeriod] = useState("Ce mois");
+
+  useEffect(() => {
+    if (searchParams.get("saved") === "true") {
+      const xp = searchParams.get("xp") || "0";
+
+      // Delay slightly to ensure UI is ready
+      setTimeout(() => {
+        toast.custom((t) => (
+          <div className="bg-black text-white px-4 py-3 rounded-xl flex items-center justify-center gap-3 shadow-2xl border border-white/10 w-full animate-in slide-in-from-bottom-20 fade-in duration-500 ease-out">
+            <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/50 flex-shrink-0">
+              <svg
+                className="w-3.5 h-3.5 text-green-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={3}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <span className="font-medium text-sm flex-1 text-center">
+              Activité sauvegardée ! <span className="text-[#D7FF00]">+{xp} XP</span> gagnés
+            </span>
+          </div>
+        ), { duration: 4000 });
+      }, 100);
+
+      // Clean params
+      setSearchParams({});
+    }
+  }, [searchParams, setSearchParams]);
+
   // Hardcoded profile data for presentation
   const profile = {
     first_name: "Pierre",

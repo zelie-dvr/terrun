@@ -1,6 +1,6 @@
 import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useState, useEffect, useRef } from "react";
-import { ArrowLeft, Target, ChevronDown, CheckSquare, ListTodo, MapPin, Signal, Play, Pause, Square } from "lucide-react";
+import { ArrowLeft, Target, ChevronDown, CheckSquare, ListTodo, MapPin, Signal, Play, Pause, Square, Scan } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -12,9 +12,9 @@ const modes = [
 ];
 
 const dailyQuests = [
-  { id: 1, title: "Sprinteur", description: "500m à fond.", progress: 100, completed: true },
-  { id: 2, title: "Explorateur", description: "Découvre 2 nouvelles tuiles.", progress: 50, completed: false },
-  { id: 3, title: "Régulier", description: "3 sorties cette semaine.", progress: 30, completed: false },
+  { id: 1, title: "Conquérant", description: "Capturer 2 tuiles.", progress: 100, completed: true },
+  { id: 2, title: "Endurance", description: "Vitesse stable 5 min.", progress: 50, completed: false },
+  { id: 3, title: "Exploration", description: "Courir dans une zone inconnue.", progress: 30, completed: false },
 ];
 
 const communityChallenges = [
@@ -28,6 +28,7 @@ export default function Run() {
   const [selectedMode, setSelectedMode] = useState("individual");
   const [showQuests, setShowQuests] = useState(false);
   const [activeQuestTab, setActiveQuestTab] = useState<"quests" | "challenges">("quests");
+  const [isScanning, setIsScanning] = useState(false);
 
   const [stats, setStats] = useState({ pace: "0'00\"", time: "00:00", distance: 0 });
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -40,6 +41,13 @@ export default function Run() {
     "M0,200L160,210C320,220,560,240,800,240C1040,240,1240,220,1360,210L1440,200L1440,320L0,320Z";
 
   // Timer logic
+  useEffect(() => {
+    if (isScanning) {
+      const timer = setTimeout(() => setIsScanning(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isScanning]);
+
   useEffect(() => {
     if (runState === "running") {
       timerRef.current = setInterval(() => {
@@ -214,6 +222,16 @@ export default function Run() {
           </div>
         </div>
 
+        {/* Radar Animation Overlay */}
+        {isScanning && (
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-0 overflow-hidden">
+            <div className="w-full h-full absolute animate-pulse bg-terrun-lime/5" />
+            <div className="w-[500px] h-[500px] rounded-full border-2 border-terrun-lime/30 animate-ping absolute" />
+            <div className="w-[300px] h-[300px] rounded-full border border-terrun-lime/50 animate-ping absolute delay-100" />
+            <Scan className="w-12 h-12 text-terrun-lime animate-spin-slow opacity-50 absolute" />
+          </div>
+        )}
+
         {/* Top controls */}
         <div className="absolute top-4 left-4 right-4 flex justify-between">
           <button
@@ -248,7 +266,7 @@ export default function Run() {
 
         {/* Stats panel */}
         <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm rounded-t-3xl pt-6 pb-8 px-6 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
-          <p className="text-center text-primary font-medium mb-6 tracking-widest text-[10px] uppercase">PRÊT À CONQUÉRIR</p>
+          <p className="text-center text-primary font-light mb-6 tracking-[0.2em] text-[10px] uppercase">PRÊT À CONQUÉRIR</p>
 
           <div className="grid grid-cols-3 gap-4 text-center mb-6">
             <div>
@@ -266,10 +284,18 @@ export default function Run() {
           </div>
 
           {/* Action bar */}
-          <div className="bg-black/90 backdrop-blur-md rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
-            <div className="w-12">
-              {/* Spacer to balance the right button */}
-            </div>
+          <div className="bg-black/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
+            <button
+              onClick={() => setIsScanning(true)}
+              className="flex flex-col items-center justify-center w-16 h-full gap-1 active:scale-95 transition-transform"
+            >
+              <span className="text-[#D7FF00] opacity-70">
+                <Scan className="w-5 h-5" />
+              </span>
+              <span className="text-[9px] text-white/70 font-medium text-center leading-tight tracking-widest">
+                RADAR
+              </span>
+            </button>
 
             {runState === "ready" && (
               <button
@@ -290,25 +316,28 @@ export default function Run() {
             )}
 
             {runState === "paused" && (
-              <div className="flex gap-4 -mt-8 justify-center w-full absolute left-0 right-0 top-0 pointer-events-none">
+              <div className="flex gap-4 -mt-4 justify-center w-full absolute left-0 right-0 top-0 pointer-events-none animate-in fade-in zoom-in duration-300">
                 <button
                   onClick={() => setRunState("running")}
-                  className="w-14 h-14 rounded-full bg-[#D7FF00] flex items-center justify-center shadow-lg border-4 border-background pointer-events-auto"
+                  className="w-14 h-14 rounded-full bg-[#D7FF00] flex items-center justify-center shadow-lg border-4 border-background pointer-events-auto transition-transform active:scale-95"
                 >
                   <Play className="w-6 h-6 text-black fill-current ml-1" />
                 </button>
                 <button
                   onClick={() => navigate("/run/summary", { state: { distance: stats.distance, time: stats.time, pace: stats.pace, durationSeconds: elapsedSeconds } })}
-                  className="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center shadow-lg border-4 border-background pointer-events-auto"
+                  className="w-14 h-14 rounded-full bg-black/70 backdrop-blur-md flex items-center justify-center shadow-lg border border-[#D7FF00]/30 pointer-events-auto transition-all hover:bg-black/80 active:scale-95 group"
                 >
-                  <Square className="w-5 h-5 text-white fill-current" />
+                  <Square className="w-5 h-5 text-[#D7FF00] fill-current opacity-90 group-hover:opacity-100" />
                 </button>
               </div>
             )}
 
-            <button className="flex flex-col items-center justify-center w-12 h-full gap-1">
-              <span className="text-muted-foreground/80">
-                <MapPin className="w-6 h-6" />
+            <button className="flex flex-col items-center justify-center w-16 h-full gap-1">
+              <span className="text-[#D7FF00]">
+                <Target className="w-5 h-5" />
+              </span>
+              <span className="text-[9px] text-white/80 font-medium text-center leading-tight">
+                CIBLER<br />UNE ZONE
               </span>
             </button>
           </div>

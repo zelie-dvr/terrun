@@ -1,7 +1,8 @@
 import { MobileLayout } from "@/components/layout/MobileLayout";
-import { Bell, Settings, Trophy, ChevronRight, ArrowLeft, Share2 } from "lucide-react";
+import { Bell, Settings, Trophy, ChevronRight, ArrowLeft, Share2, Moon, Sun, Laptop } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/theme-provider";
 
 type View = "main" | "solo" | "team";
 
@@ -31,6 +32,7 @@ const topTeams = [
 ];
 
 export default function Profile() {
+  const { theme, setTheme } = useTheme();
   const [view, setView] = useState<View>("main");
 
   if (view === "solo") {
@@ -91,6 +93,17 @@ export default function Profile() {
 
           {/* Action buttons */}
           <div className="flex gap-4 mt-2">
+            <button
+              className="p-2"
+              onClick={() => {
+                const nextTheme = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
+                setTheme(nextTheme);
+              }}
+            >
+              {theme === "light" && <Sun className="w-5 h-5" />}
+              {theme === "dark" && <Moon className="w-5 h-5" />}
+              {theme === "system" && <Laptop className="w-5 h-5" />}
+            </button>
             <button className="p-2">
               <Bell className="w-5 h-5" />
             </button>
@@ -112,39 +125,39 @@ export default function Profile() {
           </div>
         </div>
 
-        
+
         <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center">
             <img src="dist/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-medium mb-1">{Number(profile.total_distance_km).toFixed(0)}/{Number(profile.monthly_goal_km).toFixed(0)} KM</p>
-              <div className="terrun-progress">
-                <div className="terrun-progress-bar" style={{ width: `${Math.min(100, (Number(profile.total_distance_km) / Number(profile.monthly_goal_km)) * 100)}%` }} />
-              </div>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium mb-1">{Number(profile.total_distance_km).toFixed(0)}/{Number(profile.monthly_goal_km).toFixed(0)} KM</p>
+            <div className="terrun-progress">
+              <div className="terrun-progress-bar" style={{ width: `${Math.min(100, (Number(profile.total_distance_km) / Number(profile.monthly_goal_km)) * 100)}%` }} />
             </div>
           </div>
-          <div className="terrun-badge2 mb-3 mt-2">
-            <span>DISTANCE ACCUMULÉE</span>
-            <span className="font-display text-lg">132 KM</span>
-          </div>
-        
+        </div>
+        <div className="terrun-badge2 mb-3 mt-2">
+          <span>DISTANCE ACCUMULÉE</span>
+          <span className="font-display text-lg">132 KM</span>
+        </div>
+
 
         {/* Progress section */}
         <div className="terrun-card">
           <h2 className="font-display text-xl mb-4">PROGRÈS</h2>
 
-         {/* Jauge XP Niveau actuel */}
-        <div className="terrun-badge justify-between w-full mb-3 relative overflow-hidden">
-          {/* Jauge verte en arrière-plan à 70% par exemple */}
-          <div className="absolute inset-0 w-[70%] bg-gradient-to-r from-[#fcfcfc] to-[#C6D300] rounded-full"></div>
-          
-          {/* Contenu par-dessus la jauge */}
-          <div className="relative z-10 flex items-center gap-2">
-            <span>NIVEAU 6</span>
+          {/* Jauge XP Niveau actuel */}
+          <div className="terrun-badge justify-between w-full mb-3 relative overflow-hidden">
+            {/* Jauge verte en arrière-plan à 70% par exemple */}
+            <div className="absolute inset-0 w-[70%] bg-gradient-to-r from-[#fcfcfc] to-[#C6D300] rounded-full"></div>
+
+            {/* Contenu par-dessus la jauge */}
+            <div className="relative z-10 flex items-center gap-2">
+              <span>NIVEAU 6</span>
+            </div>
+            <span className="relative z-10 font-display text-lg">700/1000 XP</span>
           </div>
-          <span className="relative z-10 font-display text-lg">700/1000 XP</span>
-        </div>
 
           <button
             onClick={() => setView("solo")}
@@ -152,11 +165,11 @@ export default function Profile() {
           >
             <div className="flex items-center gap-2">
               <span>
-              <img
-              src="dist/images/icon-solo.svg"
-              alt="Carte interactive"
-              className="block ml-1 w-4 object-cover"
-              />
+                <img
+                  src="dist/images/icon-solo.svg"
+                  alt="Carte interactive"
+                  className="block ml-1 w-4 object-cover"
+                />
               </span>
               <span className="font-display text-lg">INDIVIDUEL</span>
             </div>
@@ -171,11 +184,11 @@ export default function Profile() {
           >
             <div className="flex items-center gap-2">
               <span>
-              <img
-              src="dist/images/icon-team.svg"
-              alt="Carte interactive"
-              className="block w-5 object-cover"
-            />
+                <img
+                  src="dist/images/icon-team.svg"
+                  alt="Carte interactive"
+                  className="block w-5 object-cover"
+                />
               </span>
               <span className="font-display text-lg">ÉQUIPE</span>
             </div>
@@ -184,6 +197,8 @@ export default function Profile() {
             </div>
           </button>
         </div>
+
+
       </div>
     </MobileLayout>
   );

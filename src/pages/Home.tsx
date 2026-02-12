@@ -10,10 +10,10 @@ export default function Home() {
   // Hardcoded profile data for presentation
   const profile = {
     first_name: "Pierre",
-    total_distance_km: 85, // Matches "Objectif du mois" progress
+    total_distance_km: 12, // Matches "Objectif du mois" progress
     total_runs: 42,
     total_time_seconds: 153000, // approx 42.5 hours
-    monthly_goal_km: 100
+    monthly_goal_km: 50
   };
 
   /* 
@@ -54,11 +54,7 @@ export default function Home() {
         {/* Récapitulatifs */}
         <section className="terrun-card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-medium">Récapitulatifs</h2>
-            <button className="flex items-center gap-1 text-sm border rounded-full px-3 py-1">
-              {period}
-              <ChevronDown className="w-4 h-4" />
-            </button>
+            <h2 className="font-medium">Récapitulatif</h2>
           </div>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -66,12 +62,12 @@ export default function Home() {
               <p className="stat-label">Ce mois-ci</p>
             </div>
             <div>
-              <p className="stat-value">{profile.total_runs} RUNS</p>
-              <p className="stat-label">Total</p>
+              <p className="stat-value">1 200 XP</p>
+              <p className="stat-label">Points</p>
             </div>
             <div>
-              <p className="stat-value">{Math.floor(profile.total_time_seconds / 3600)}H:{String(Math.floor((profile.total_time_seconds % 3600) / 60)).padStart(2, "0")}M</p>
-              <p className="stat-label">Temps d'activité</p>
+              <p className="stat-value">15</p>
+              <p className="stat-label">Classement</p>
             </div>
           </div>
         </section>
@@ -79,7 +75,7 @@ export default function Home() {
         {/* Objectifs du mois */}
         <section className="terrun-card">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-medium">Objectifs du mois</h2>
+            <h2 className="font-medium">Objectif du mois</h2>
             <button className="flex items-center gap-1 text-sm border rounded-full px-3 py-1">
               Changer
               <Pencil className="w-3 h-3" />
@@ -87,7 +83,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full flex items-center justify-center">
-            <img src="../public/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
+              <img src="../public/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium mb-1">{Number(profile.total_distance_km).toFixed(0)}/{Number(profile.monthly_goal_km).toFixed(0)} KM</p>
@@ -106,7 +102,7 @@ export default function Home() {
           </div>
           <div className="flex gap-4 overflow-x-auto hide-scrollbar -mx-4 px-4 pb-2">
             <ChallengeCard
-              icon={<img src="../public/images/Run.svg"/>}
+              icon={<img src="../public/images/Run.svg" />}
               title="Explorer 5 parcours"
               description="Valider 5 circuits créés par la communauté."
               color="from-orange-500/20 to-orange-500/5"
@@ -115,7 +111,7 @@ export default function Home() {
               iconBg="bg-orange-500/20"
             />
             <ChallengeCard
-              icon={<img src="../public/images/Team.svg"/>}
+              icon={<img src="../public/images/Team.svg" />}
               title="Esprit d'équipe"
               description="Inviter un ami à rejoindre Terrun ou courir à deux."
               color="from-blue-500/20 to-blue-500/5"
@@ -135,6 +131,23 @@ export default function Home() {
               alt="Carte interactive"
               className="block w-full h-full object-cover"
             />
+            {/* Légende */}
+            <div className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm border border-white/20">
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full shadow-[0_0_8px_rgba(215,255,0,0.6)]" style={{ backgroundColor: "#D7FF00" }}></div>
+                  <span className="text-[10px] font-medium leading-none text-black">Zones capturées</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.4)]"></div>
+                  <span className="text-[10px] font-medium leading-none text-black">Zones contestées</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.4)]"></div>
+                  <span className="text-[10px] font-medium leading-none text-black">Zones des autres</span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -172,7 +185,7 @@ function ChallengeCard({
   borderColor = "border-border",
   iconColor = "text-primary",
   iconBg = "bg-primary/20"
-  
+
 }: {
   icon: ReactNode;
   title: string;

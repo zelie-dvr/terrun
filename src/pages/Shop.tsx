@@ -10,10 +10,10 @@ const categories = [
 ];
 
 const featuredItems = [
-  { id: 1, name: "Bonnet Alien", price: 500, img: "dist/images/boutique_1.png", type: "cosmetic" },
-  { id: 2, name: "Chapeau blanc", price: 200, img: "dist/images/boutique_2.png", type: "boost" },
-  { id: 3, name: "Haut monstre", price: 750, img: "dist/images/boutique_3.png", type: "cosmetic" },
-  { id: 4, name: "Pantalon bleu", price: 1000, img: "dist/images/boutique_4.png", type: "special" },
+  { id: 1, name: "Bonnet Alien", price: 500, img: "/images/boutique_1.png", type: "cosmetic" },
+  { id: 2, name: "Chapeau blanc", price: 200, img: "/images/boutique_2.png", type: "boost" },
+  { id: 3, name: "Haut monstre", price: 750, img: "/images/boutique_3.png", type: "cosmetic" },
+  { id: 4, name: "Pantalon bleu", price: 1000, img: "/images/boutique_4.png", type: "special" },
 ];
 
 export default function Shop() {
@@ -26,11 +26,11 @@ export default function Shop() {
           <div className="flex items-center gap-2 bg-primary rounded-full px-4 py-2">
             <span className="font-display">2,450</span>
             <span>
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/408/408472.png"
-                    alt="diamond"
-                    className="w-4 h-4"
-                  />
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/408/408472.png"
+                alt="diamond"
+                className="w-4 h-4"
+              />
             </span>
           </div>
         </header>
@@ -60,21 +60,21 @@ export default function Shop() {
             {featuredItems.map((item) => (
               <div key={item.id} className="terrun-card">
                 <div className="w-full aspect-square bg-muted rounded-xl flex items-center justify-center text-4xl mb-3">
-                <img
-                  src={item.img}
-                  alt={item.name}
-                  className="object-contain"
-                />
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    className="object-contain"
+                  />
                 </div>
-                
+
                 <h3 className="font-medium text-sm mb-1">{item.name}</h3>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-display flex items-center gap-1">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/408/408472.png"
-                    alt="diamond"
-                    className="w-4 h-4"
-                  />
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/408/408472.png"
+                      alt="diamond"
+                      className="w-4 h-4"
+                    />
                     {item.price}
                   </span>
                   <button className="w-8 h-8 rounded-full bg-foreground flex items-center justify-center">

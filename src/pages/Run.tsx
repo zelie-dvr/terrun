@@ -12,9 +12,14 @@ const modes = [
 ];
 
 const dailyQuests = [
-  { id: 1, title: "Daily 1 — Allure contrôlée", description: "Maintenir une allure régulière pendant 10 minutes.", progress: 100, completed: true },
-  { id: 2, title: "Daily 2 — Petit défi de la journée", description: "Faire au moins 2 km aujourd'hui.", progress: 60, completed: false },
-  { id: 3, title: "Daily 3 — Photo du jour", description: "Prendre une photo d'un lieu intéressant pendant ta course.", progress: 30, completed: false },
+  { id: 1, title: "Sprinteur", description: "500m à fond.", progress: 100, completed: true },
+  { id: 2, title: "Explorateur", description: "Découvre 2 nouvelles tuiles.", progress: 50, completed: false },
+  { id: 3, title: "Régulier", description: "3 sorties cette semaine.", progress: 30, completed: false },
+];
+
+const communityChallenges = [
+  { id: 1, title: "Esprit d'équipe", description: "Courir 50km en cumulé avec son clan.", participants: 1240 },
+  { id: 2, title: "Winter Ark", description: "Maintenir une série de 7 jours.", participants: 850 },
 ];
 
 export default function Run() {
@@ -23,16 +28,16 @@ export default function Run() {
   const [selectedMode, setSelectedMode] = useState("individual");
   const [showQuests, setShowQuests] = useState(false);
   const [activeQuestTab, setActiveQuestTab] = useState<"quests" | "challenges">("quests");
-  
+
   const [stats, setStats] = useState({ pace: "0'00\"", time: "00:00", distance: 0 });
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const waveIndividual =
-  "M0,210L120,220C240,230,480,250,720,250C960,250,1200,230,1320,220L1440,210L1440,320L0,320Z";
+    "M0,210L120,220C240,230,480,250,720,250C960,250,1200,230,1320,220L1440,210L1440,320L0,320Z";
 
-const waveTeam =
-  "M0,200L160,210C320,220,560,240,800,240C1040,240,1240,220,1360,210L1440,200L1440,320L0,320Z";
+  const waveTeam =
+    "M0,200L160,210C320,220,560,240,800,240C1040,240,1240,220,1360,210L1440,200L1440,320L0,320Z";
 
   // Timer logic
   useEffect(() => {
@@ -63,7 +68,7 @@ const waveTeam =
   if (runState === "mode-select") {
     return (
       <MobileLayout hideNav>
-        
+
         <div className="min-h-screen bg-gradient-to-b from-[#fff] to-[#e9ee9d] to-white p-6 animate-fade-in flex flex-col relative overflow-hidden">
           {/* Back button */}
           <button
@@ -85,12 +90,12 @@ const waveTeam =
             <div className="relative w-full max-w-md h-64">
               {modes.map((mode, index) => {
                 const isActive = selectedMode === mode.id;
-                
+
                 // Calculate position: active centered, inactive offset to sides
-                const leftPosition = isActive 
-                  ? "50%" 
-                  : index === 0 
-                    ? "20%" 
+                const leftPosition = isActive
+                  ? "50%"
+                  : index === 0
+                    ? "20%"
                     : "80%";
 
                 return (
@@ -114,13 +119,13 @@ const waveTeam =
                           : "bg-white/60 border-4 border-[#C4D600]/40"
                       )}
                     >
-                      <img 
-                        src={mode.image} 
+                      <img
+                        src={mode.image}
                         alt={mode.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    
+
                     {/* Mode name - only show for active */}
                     {isActive && (
                       <div className="text-center">
@@ -150,27 +155,27 @@ const waveTeam =
             </button>
           </div>
           <svg
-  key={selectedMode}
-  className="absolute top-0 left-0 w-full h-screen z-0"
-  viewBox="0 0 1140 320"
-  preserveAspectRatio="none"
->
-  <path fill="#FFFFFF">
-    <animate
-      attributeName="d"
-      dur="0.6s"
-      calcMode="spline"
-      keySplines="0.4 0 0.2 1"
-      keyTimes="0;1"
-      fill="freeze"
-      values={
-        selectedMode === "individual"
-          ? `${waveTeam};${waveIndividual}`
-          : `${waveIndividual};${waveTeam}`
-      }
-    />
-  </path>
-</svg>
+            key={selectedMode}
+            className="absolute top-0 left-0 w-full h-screen z-0"
+            viewBox="0 0 1140 320"
+            preserveAspectRatio="none"
+          >
+            <path fill="#FFFFFF">
+              <animate
+                attributeName="d"
+                dur="0.6s"
+                calcMode="spline"
+                keySplines="0.4 0 0.2 1"
+                keyTimes="0;1"
+                fill="freeze"
+                values={
+                  selectedMode === "individual"
+                    ? `${waveTeam};${waveIndividual}`
+                    : `${waveIndividual};${waveTeam}`
+                }
+              />
+            </path>
+          </svg>
 
 
 
@@ -193,11 +198,11 @@ const waveTeam =
               ))}
             </div>
           </div>
-          
+
           {/* Territory zones */}
           <div className="absolute top-20 left-4 w-24 h-32 bg-terrun-purple/40 rounded-lg" />
           <div className="absolute top-40 right-8 w-32 h-24 bg-terrun-teal/40 rounded-lg" />
-          
+
           {/* User position */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="relative">
@@ -213,40 +218,37 @@ const waveTeam =
         <div className="absolute top-4 left-4 right-4 flex justify-between">
           <button
             onClick={() => setRunState("mode-select")}
-            className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center shadow-sm"
           >
             <ChevronDown className="w-5 h-5" />
           </button>
-
-          <div className="flex items-center gap-2 bg-background rounded-full px-3 py-2 border border-border">
-            <Signal className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium">GPS</span>
-            <span className="text-primary">✓</span>
-          </div>
         </div>
 
         {/* Quest/Challenge buttons */}
-        <div className="absolute top-20 left-4 flex flex-col gap-2">
+        <div className="absolute top-20 left-4 flex flex-col gap-3">
           <button
-            onClick={() => setShowQuests(true)}
-            className="w-10 h-10 rounded-lg bg-background border border-border flex items-center justify-center"
+            onClick={() => {
+              setShowQuests(true);
+              setActiveQuestTab("quests");
+            }}
+            className="w-10 h-10 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg"
           >
-            <CheckSquare className="w-5 h-5" />
+            <CheckSquare className="w-5 h-5 text-[#D7FF00]" />
           </button>
           <button
             onClick={() => {
               setShowQuests(true);
               setActiveQuestTab("challenges");
             }}
-            className="w-10 h-10 rounded-lg bg-background border border-border flex items-center justify-center"
+            className="w-10 h-10 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg"
           >
-            <ListTodo className="w-5 h-5" />
+            <ListTodo className="w-5 h-5 text-[#D7FF00]" />
           </button>
         </div>
 
         {/* Stats panel */}
-        <div className="absolute bottom-0 left-0 right-0 bg-background rounded-t-3xl pt-4 pb-6 px-6 shadow-lg">
-          <p className="text-center text-primary font-medium mb-4">Mode individuel</p>
+        <div className="absolute bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm rounded-t-3xl pt-6 pb-8 px-6 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+          <p className="text-center text-primary font-medium mb-6 tracking-widest text-[10px] uppercase">PRÊT À CONQUÉRIR</p>
 
           <div className="grid grid-cols-3 gap-4 text-center mb-6">
             <div>
@@ -264,53 +266,49 @@ const waveTeam =
           </div>
 
           {/* Action bar */}
-          <div className="bg-foreground rounded-full p-2 flex items-center justify-between">
-            <button className="flex flex-col items-center px-4 py-2">
-              <span className="text-muted-foreground text-xl">🏃</span>
-              <span className="text-[10px] text-muted-foreground">Individuel</span>
-            </button>
+          <div className="bg-black/90 backdrop-blur-md rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
+            <div className="w-12">
+              {/* Spacer to balance the right button */}
+            </div>
 
             {runState === "ready" && (
               <button
                 onClick={() => setRunState("running")}
-                className="w-16 h-16 rounded-full bg-primary flex items-center justify-center -mt-6 shadow-lg"
+                className="w-16 h-16 rounded-full bg-[#D7FF00] flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(215,255,0,0.4)] border-4 border-background transition-transform active:scale-95"
               >
-                <Play className="w-6 h-6 text-foreground fill-current ml-1" />
+                <Play className="w-7 h-7 text-black fill-current ml-1" />
               </button>
             )}
 
             {runState === "running" && (
               <button
                 onClick={() => setRunState("paused")}
-                className="w-16 h-16 rounded-full bg-primary flex items-center justify-center -mt-6 shadow-lg"
+                className="w-16 h-16 rounded-full bg-[#D7FF00] flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(215,255,0,0.4)] border-4 border-background transition-transform active:scale-95"
               >
-                <Pause className="w-6 h-6 text-foreground" />
+                <Pause className="w-7 h-7 text-black fill-current" />
               </button>
             )}
 
             {runState === "paused" && (
-              <div className="flex gap-2 -mt-6">
+              <div className="flex gap-4 -mt-8 justify-center w-full absolute left-0 right-0 top-0 pointer-events-none">
                 <button
                   onClick={() => setRunState("running")}
-                  className="w-14 h-14 rounded-full bg-primary flex items-center justify-center shadow-lg"
+                  className="w-14 h-14 rounded-full bg-[#D7FF00] flex items-center justify-center shadow-lg border-4 border-background pointer-events-auto"
                 >
-                  <Play className="w-5 h-5 text-foreground fill-current ml-0.5" />
+                  <Play className="w-6 h-6 text-black fill-current ml-1" />
                 </button>
                 <button
                   onClick={() => navigate("/run/summary", { state: { distance: stats.distance, time: stats.time, pace: stats.pace, durationSeconds: elapsedSeconds } })}
-                  className="w-14 h-14 rounded-full bg-destructive flex items-center justify-center shadow-lg"
+                  className="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center shadow-lg border-4 border-background pointer-events-auto"
                 >
                   <Square className="w-5 h-5 text-white fill-current" />
                 </button>
               </div>
             )}
 
-            <button className="flex flex-col items-center px-4 py-2">
-              <span className="text-muted-foreground text-xl">📍</span>
-              <span className="text-[10px] text-muted-foreground text-center leading-tight">
-                Ajouter un
-                <br />
-                itinéraire
+            <button className="flex flex-col items-center justify-center w-12 h-full gap-1">
+              <span className="text-muted-foreground/80">
+                <MapPin className="w-6 h-6" />
               </span>
             </button>
           </div>
@@ -318,7 +316,7 @@ const waveTeam =
 
         {/* Quests panel */}
         {showQuests && (
-          <div className="absolute inset-0 bg-background/95 z-50 animate-slide-up">
+          <div className="absolute inset-0 bg-black/95 text-white z-50 animate-slide-up">
             <div className="p-4">
               <button
                 onClick={() => setShowQuests(false)}
@@ -327,64 +325,79 @@ const waveTeam =
                 <ChevronDown className="w-6 h-6" />
               </button>
 
-              <h2 className="font-display text-2xl mb-4">QUÊTES DU JOUR</h2>
+              <h2 className="font-display text-2xl mb-4 uppercase">
+                {activeQuestTab === "quests" ? "QUÊTES DU JOUR" : "DÉFIS COMMUNAUTAIRES"}
+              </h2>
 
               <div className="flex gap-2 mb-6">
                 <button
                   onClick={() => setActiveQuestTab("quests")}
                   className={cn(
-                    "flex-1 py-3 rounded-full flex items-center justify-center gap-2 transition-all",
+                    "flex-1 py-3 rounded-full flex items-center justify-center gap-2 transition-all font-display text-sm",
                     activeQuestTab === "quests"
-                      ? "bg-foreground text-background"
+                      ? "bg-[#D7FF00] text-black"
                       : "bg-muted text-foreground"
                   )}
                 >
                   <CheckSquare className="w-4 h-4" />
+                  QUÊTES
                 </button>
                 <button
                   onClick={() => setActiveQuestTab("challenges")}
                   className={cn(
-                    "flex-1 py-3 rounded-full flex items-center justify-center gap-2 transition-all",
+                    "flex-1 py-3 rounded-full flex items-center justify-center gap-2 transition-all font-display text-sm",
                     activeQuestTab === "challenges"
-                      ? "bg-foreground text-background"
+                      ? "bg-[#D7FF00] text-black"
                       : "bg-muted text-foreground"
                   )}
                 >
                   <ListTodo className="w-4 h-4" />
+                  DÉFIS
                 </button>
               </div>
 
-              <div className="space-y-4">
-                {dailyQuests.map((quest) => (
-                  <div key={quest.id} className="border-b border-border pb-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-sm">{quest.title}</h3>
-                        <p className="text-xs text-muted-foreground">
-                          {quest.description}
-                        </p>
+              <div className="space-y-3">
+                {activeQuestTab === "quests" ? (
+                  dailyQuests.map((quest) => (
+                    <div key={quest.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-sm mb-1">{quest.title}</h3>
+                          <p className="text-xs text-stone-400">
+                            {quest.description}
+                          </p>
+                        </div>
+                        <div
+                          className={cn(
+                            "w-5 h-5 rounded flex items-center justify-center ml-3",
+                            quest.completed
+                              ? "bg-[#D7FF00] text-black"
+                              : "border border-white/20"
+                          )}
+                        >
+                          {quest.completed && <span className="text-xs font-bold">✓</span>}
+                        </div>
                       </div>
-                      <div
-                        className={cn(
-                          "w-5 h-5 rounded border-2 flex items-center justify-center",
-                          quest.completed
-                            ? "bg-foreground border-foreground"
-                            : "border-muted-foreground"
-                        )}
-                      >
-                        {quest.completed && (
-                          <span className="text-background text-xs">✓</span>
-                        )}
+                      <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-[#D7FF00]"
+                          style={{ width: `${quest.progress}%` }}
+                        />
                       </div>
                     </div>
-                    <div className="terrun-progress">
-                      <div
-                        className="terrun-progress-bar"
-                        style={{ width: `${quest.progress}%` }}
-                      />
+                  ))
+                ) : (
+                  communityChallenges.map((challenge) => (
+                    <div key={challenge.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
+                      <h3 className="font-semibold text-sm mb-1">{challenge.title}</h3>
+                      <p className="text-xs text-stone-400 mb-3">{challenge.description}</p>
+                      <div className="flex items-center gap-2 text-xs font-medium text-[#D7FF00]">
+                        <span>●</span>
+                        <span className="text-stone-300">{challenge.participants} participants</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </div>

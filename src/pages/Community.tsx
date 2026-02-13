@@ -13,7 +13,7 @@ const friends = [
     lastMessage: "On court à 18h ?",
     time: "14:30",
     unread: 2,
-    avatar: "R",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tristan",
     isOnline: true,
   },
   {
@@ -21,7 +21,7 @@ const friends = [
     lastMessage: "Je viens de capturer ta zone au port !",
     time: "12:15",
     unread: 1,
-    avatar: "S",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Cla",
     isOnline: true,
   },
   {
@@ -29,7 +29,7 @@ const friends = [
     lastMessage: "Demain 7h pour la séance Winter Ark ?",
     time: "Hier",
     unread: 0,
-    avatar: "E",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Mat",
     isOnline: false,
   },
   {
@@ -37,7 +37,7 @@ const friends = [
     lastMessage: "T'as vu mon nouveau record de vitesse ?",
     time: "Hier",
     unread: 0,
-    avatar: "M",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=j",
     isOnline: false,
   },
   {
@@ -45,23 +45,23 @@ const friends = [
     lastMessage: "Objectif Radiant en marche, bien joué !",
     time: "Lun",
     unread: 0,
-    avatar: "X",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elise",
     isOnline: true,
   },
 ]
 
 const topContributors = [
-  { rank: 1, name: "Alex_Runner83", points: 1200, icon: Target },
-  { rank: 2, name: "SarahDesign", points: 980, icon: MessageSquare },
-  { rank: 3, name: "Tom-Dev", points: 850, icon: Palette },
+  { rank: 1, name: "Alex_Runner83", points: 1200, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alexandrzz" },
+  { rank: 2, name: "SarahDesign", points: 980, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
+  { rank: 3, name: "Tom-Dev", points: 850, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
 ];
 
 const teamChat = [
-  { id: 1, time: "18:30", user: "Alex_Runner83", message: "Go raid le port ce soir ?" },
-  { id: 2, time: "18:32", user: "SarahDesign", message: "J'suis chaude ! J'arrive dans 10min." },
-  { id: 3, time: "18:35", user: "Tom-Dev", message: "Attention, y'a du monde zone Nord." },
-  { id: 4, time: "18:36", user: "Alex_Runner83", message: "Ok on se regroupe point alpha." },
-  { id: 5, time: "18:38", user: "KevinSpeed", message: "J'arrive en renfort !" },
+  { id: 1, time: "18:30", user: "Alex_Runner83", message: "Go raid le port ce soir ?", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
+  { id: 2, time: "18:32", user: "SarahDesign", message: "J'suis chaude ! J'arrive dans 10min.", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" },
+  { id: 3, time: "18:35", user: "Tom-Dev", message: "Attention, y'a du monde zone Nord.", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Tom" },
+  { id: 4, time: "18:36", user: "Alex_Runner83", message: "Ok on se regroupe point alpha.", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" },
+  { id: 5, time: "18:38", user: "KevinSpeed", message: "J'arrive en renfort !", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kevin" },
 ];
 
 type Geography = "ville" | "region" | "national";
@@ -75,7 +75,7 @@ const leaderboardData: Record<RankingTab, Record<Geography, { rank: number; name
       { rank: 4, name: "Sacha", xp: 1500, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sacha", tier: "sentinelle", trend: "up" },
       { rank: 5, name: "Perrine", xp: 1200, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Perrine", tier: "sentinelle", trend: "stable" },
       { rank: 6, name: "Maxime", xp: 1100, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maxime", tier: "sentinelle", trend: "down" },
-      { rank: 12, name: "Victoire", xp: 1200, avatar: "dist/images/individual-avatar.png", tier: "eclaireur", trend: "up" },
+      { rank: 12, name: "Victoire", xp: 1200, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nice", tier: "eclaireur", trend: "up" },
     ],
     region: [
       { rank: 1, name: "SpeedDemon_13", xp: 12500, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Speed", tier: "souverain", trend: "up" },
@@ -84,7 +84,7 @@ const leaderboardData: Record<RankingTab, Record<Geography, { rank: number; name
       { rank: 4, name: "AlpsClimber", xp: 10500, tier: "sentinelle", trend: "down" },
       { rank: 5, name: "Provencal", xp: 9800, tier: "sentinelle", trend: "stable" },
       { rank: 6, name: "AzurSprinter", xp: 9200, tier: "sentinelle", trend: "up" },
-      { rank: 12, name: "Victoire", xp: 4500, avatar: "dist/images/individual-avatar.png", tier: "eclaireur", trend: "up" },
+      { rank: 12, name: "Victoire", xp: 4500, avatar:"dist/images/individual-avatar.png", tier: "eclaireur", trend: "up" },
     ],
     national: [
       { rank: 1, name: "ParisMarathoner", xp: 150000, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Paris", tier: "souverain", trend: "stable" },
@@ -219,7 +219,12 @@ function FriendsTab() {
         >
           {/* Avatar */}
           <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-bold text-foreground">
-            {friend.avatar}
+          <img
+  src={friend.avatar}
+  alt={friend.name}
+  className="w-full h-full object-cover rounded-full"
+/>
+
             {friend.isOnline && (
               <div className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-card bg-[#C4D600]" />
             )}
@@ -344,9 +349,14 @@ function TeamTab() {
                 <span className="font-display text-2xl text-[#000] w-6 text-center italic">#{contributor.rank}</span>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#C4D600]/10 border border-[#C4D600]/20 flex items-center justify-center">
-                    <contributor.icon className="w-5 h-5 text-[#9AA800]" />
-                  </div>
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-[#C4D600]/30">
+                  <img
+                    src={contributor.avatar}
+                    alt={contributor.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
                   <span className="font-bold text-base">{contributor.name}</span>
                 </div>
               </div>
@@ -416,9 +426,14 @@ function TeamTab() {
           {teamChat.map((msg) => (
             <div key={msg.id} className="flex gap-3 group">
               {/* Avatar */}
-              <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-800 border border-[#C4D600]/50 flex items-center justify-center shrink-0">
-                <User className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-[#C4D600]/30">
+                <img
+                  src={msg.avatar}
+                  alt={msg.user}
+                  className="w-full h-full object-cover"
+                />
               </div>
+
 
               {/* Content */}
               <div className="flex-1">

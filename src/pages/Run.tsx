@@ -12,7 +12,7 @@ const modes = [
 ];
 
 const dailyQuests = [
-  { id: 1, title: "Conquérant", description: "Capturer 2 tuiles.", progress: 100, completed: true },
+  { id: 1, title: "Conquérant", description: "Capturer 2 territoires.", progress: 100, completed: true },
   { id: 2, title: "Endurance", description: "Vitesse stable 5 min.", progress: 50, completed: false },
   { id: 3, title: "Exploration", description: "Courir dans une zone inconnue.", progress: 30, completed: false },
 ];
@@ -77,10 +77,10 @@ export default function Run() {
     return (
       <MobileLayout hideNav>
 
-        <div className="min-h-screen bg-gradient-to-b from-[#fff] to-[#e9ee9d] to-white p-6 animate-fade-in flex flex-col relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-b from-white to-[#e9ee9d] p-6 animate-fade-in flex flex-col relative overflow-hidden">
           {/* Back button */}
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/run/summary")}
             className="w-10 h-10 flex items-center justify-center mb-8 self-start"
           >
             <ArrowLeft className="w-6 h-6 text-foreground" strokeWidth={2.5} />
@@ -121,7 +121,7 @@ export default function Run() {
                     {/* Avatar circle */}
                     <div
                       className={cn(
-                        "w-40 h-40 rounded-full flex items-center justify-center overflow-hidden transition-all duration-500",
+                        "w-40 h-40 rounded-full flex items-center justify-center overflow-hidden transition-all duration-500 mb-5",
                         isActive
                           ? "bg-white border-[6px] border-[#C4D600] shadow-2xl"
                           : "bg-white/60 border-4 border-[#C4D600]/40"
@@ -184,10 +184,6 @@ export default function Run() {
               />
             </path>
           </svg>
-
-
-
-
         </div>
       </MobileLayout>
     );
@@ -243,24 +239,25 @@ export default function Run() {
         </div>
 
         {/* Quest/Challenge buttons */}
+        
         <div className="absolute top-20 left-4 flex flex-col gap-3">
           <button
             onClick={() => {
               setShowQuests(true);
               setActiveQuestTab("quests");
             }}
-            className="w-10 h-10 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg"
+            className="w-10 h-10 rounded-xl bg-white backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg"
           >
-            <CheckSquare className="w-5 h-5 text-[#D7FF00]" />
+            <CheckSquare className="w-5 h-5 text-[#000]" />
           </button>
           <button
             onClick={() => {
               setShowQuests(true);
               setActiveQuestTab("challenges");
             }}
-            className="w-10 h-10 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg"
+            className="w-10 h-10 rounded-xl bg-white backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg"
           >
-            <ListTodo className="w-5 h-5 text-[#D7FF00]" />
+            <ListTodo className="w-5 h-5 text-[#000]" />
           </button>
         </div>
 
@@ -284,15 +281,15 @@ export default function Run() {
           </div>
 
           {/* Action bar */}
-          <div className="bg-black/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
+          <div className="bg-black/90 backdrop-blur-md rounded-full px-6 py-3 flex items-center justify-between shadow-2xl relative">
             <button
               onClick={() => setIsScanning(true)}
               className="flex flex-col items-center justify-center w-16 h-full gap-1 active:scale-95 transition-transform"
             >
-              <span className="text-[#D7FF00] opacity-70">
+              <span className="text-[#C6D300] opacity-70">
                 <Scan className="w-5 h-5" />
               </span>
-              <span className="text-[9px] text-white/70 font-medium text-center leading-tight tracking-widest">
+              <span className="text-[9px] text-white/90 font-medium text-center leading-tight tracking-widest">
                 RADAR
               </span>
             </button>
@@ -300,7 +297,7 @@ export default function Run() {
             {runState === "ready" && (
               <button
                 onClick={() => setRunState("running")}
-                className="w-16 h-16 rounded-full bg-[#D7FF00] flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(215,255,0,0.4)] border-4 border-background transition-transform active:scale-95"
+                className="w-16 h-16 rounded-full bg-[#C6D300] flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(215,255,0,0.4)] border-4 border-background transition-transform active:scale-95"
               >
                 <Play className="w-7 h-7 text-black fill-current ml-1" />
               </button>
@@ -309,7 +306,7 @@ export default function Run() {
             {runState === "running" && (
               <button
                 onClick={() => setRunState("paused")}
-                className="w-16 h-16 rounded-full bg-[#D7FF00] flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(215,255,0,0.4)] border-4 border-background transition-transform active:scale-95"
+                className="w-16 h-16 rounded-full bg-[#C6D300] flex items-center justify-center -mt-8 shadow-[0_0_20px_rgba(215,255,0,0.4)] border-4 border-background transition-transform active:scale-95"
               >
                 <Pause className="w-7 h-7 text-black fill-current" />
               </button>
@@ -319,7 +316,7 @@ export default function Run() {
               <div className="flex gap-4 -mt-4 justify-center w-full absolute left-0 right-0 top-0 pointer-events-none animate-in fade-in zoom-in duration-300">
                 <button
                   onClick={() => setRunState("running")}
-                  className="w-14 h-14 rounded-full bg-[#D7FF00] flex items-center justify-center shadow-lg border-4 border-background pointer-events-auto transition-transform active:scale-95"
+                  className="w-14 h-14 rounded-full bg-[#C6D300] flex items-center justify-center shadow-lg border-4 border-background pointer-events-auto transition-transform active:scale-95"
                 >
                   <Play className="w-6 h-6 text-black fill-current ml-1" />
                 </button>
@@ -327,16 +324,16 @@ export default function Run() {
                   onClick={() => navigate("/run/summary", { state: { distance: stats.distance, time: stats.time, pace: stats.pace, durationSeconds: elapsedSeconds } })}
                   className="w-14 h-14 rounded-full bg-black/70 backdrop-blur-md flex items-center justify-center shadow-lg border border-[#D7FF00]/30 pointer-events-auto transition-all hover:bg-black/80 active:scale-95 group"
                 >
-                  <Square className="w-5 h-5 text-[#D7FF00] fill-current opacity-90 group-hover:opacity-100" />
+                  <Square className="w-5 h-5 text-[#C6D300] fill-current opacity-90 group-hover:opacity-100" />
                 </button>
               </div>
             )}
 
             <button className="flex flex-col items-center justify-center w-16 h-full gap-1">
-              <span className="text-[#D7FF00]">
+              <span className="text-[#C6D300]">
                 <Target className="w-5 h-5" />
               </span>
-              <span className="text-[9px] text-white/80 font-medium text-center leading-tight">
+              <span className="text-[9px] text-white/90 font-medium text-center leading-tight">
                 CIBLER<br />UNE ZONE
               </span>
             </button>
@@ -364,7 +361,7 @@ export default function Run() {
                   className={cn(
                     "flex-1 py-3 rounded-full flex items-center justify-center gap-2 transition-all font-display text-sm",
                     activeQuestTab === "quests"
-                      ? "bg-[#D7FF00] text-black"
+                      ? "bg-[#C6D300] text-black"
                       : "bg-muted text-foreground"
                   )}
                 >
@@ -376,7 +373,7 @@ export default function Run() {
                   className={cn(
                     "flex-1 py-3 rounded-full flex items-center justify-center gap-2 transition-all font-display text-sm",
                     activeQuestTab === "challenges"
-                      ? "bg-[#D7FF00] text-black"
+                      ? "bg-[#C6D300] text-black"
                       : "bg-muted text-foreground"
                   )}
                 >
@@ -400,7 +397,7 @@ export default function Run() {
                           className={cn(
                             "w-5 h-5 rounded flex items-center justify-center ml-3",
                             quest.completed
-                              ? "bg-[#D7FF00] text-black"
+                              ? "bg-[#C6D300] text-black"
                               : "border border-white/20"
                           )}
                         >
@@ -409,7 +406,7 @@ export default function Run() {
                       </div>
                       <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-[#D7FF00]"
+                          className="h-full bg-[#C6D300]"
                           style={{ width: `${quest.progress}%` }}
                         />
                       </div>
@@ -420,7 +417,7 @@ export default function Run() {
                     <div key={challenge.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
                       <h3 className="font-semibold text-sm mb-1">{challenge.title}</h3>
                       <p className="text-xs text-stone-400 mb-3">{challenge.description}</p>
-                      <div className="flex items-center gap-2 text-xs font-medium text-[#D7FF00]">
+                      <div className="flex items-center gap-2 text-xs font-medium text-[#C6D300]">
                         <span>●</span>
                         <span className="text-stone-300">{challenge.participants} participants</span>
                       </div>

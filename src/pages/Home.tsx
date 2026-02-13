@@ -37,7 +37,7 @@ export default function Home() {
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full border-2 border-primary overflow-hidden shadow-md">
-              <img src="dist/images/profile-picture.png" alt="Profile" className="w-full h-full object-cover" />
+              <img src="dist/images/individual-avatar.png" alt="Profile" className="w-full h-full object-cover" />
             </div>
             <span className="font-medium text-lg">
               Salut, <span className="font-bold text-primary dark:text-terrun-lime-500">{firstName}</span> 👋

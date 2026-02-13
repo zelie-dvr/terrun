@@ -501,11 +501,11 @@ function TeamTab({ onBack }: { onBack: () => void }) {
 
         <div className="space-y-3">
         {[
-          { name: "Alex_Runner83", points: 530, rank: 1, icon: MapPin },
-          { name: "SarahDesign", points: 420, rank: 2, icon: MapPin },
-          { name: "Victoire", points: 370, rank: 12, icon: MapPin },
-          { name: "Tom-Dev", points: 220, rank: 3, icon: MapPin },
-          { name: "HectorCo", points: 150, rank: 4, icon: MapPin },
+          { name: "Alex_Runner83", points: 530, rank: 1, avatar:"https://api.dicebear.com/7.x/avataaars/svg?seed=Alexandrzz",  icon: MapPin },
+          { name: "SarahDesign", points: 420, rank: 2, avatar:"https://api.dicebear.com/7.x/avataaars/svg?seed=Alex", icon: MapPin },
+          { name: "Victoire", points: 370, rank: 12, avatar:"dist/images/individual-avatar.png", icon: MapPin },
+          { name: "Tom-Dev", points: 220, rank: 3, avatar:"https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah", icon: MapPin },
+          { name: "HectorCo", points: 150, rank: 4, avatar:"https://api.dicebear.com/7.x/avataaars/svg?seed=Alexjrjkikok", icon: MapPin },
         ]
           // Afficher d’abord les 4 premiers puis la Victoire
           .sort((a, b) => (a.rank <= 4 && b.rank <= 4 ? a.rank - b.rank : a.rank === 12 ? 1 : b.rank === 12 ? -1 : a.rank - b.rank))
@@ -526,8 +526,12 @@ function TeamTab({ onBack }: { onBack: () => void }) {
 
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-[#C4D600]/10 border border-[#C4D600]/20 flex items-center justify-center">
-                    <contributor.icon className="w-5 h-5 text-[#C4D600]" />
-                  </div>
+                  <img
+                  src={contributor.avatar}
+                  alt={contributor.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
                   <span className="font-bold text-base">{contributor.name}</span>
                 </div>
               </div>

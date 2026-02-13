@@ -6,14 +6,6 @@ import { Route, Map, Calendar } from "lucide-react";
 
 type View = "main" | "solo" | "team";
 
-const topTeams = [
-  { name: "TERRUNNER83", members: 12, level: 114, color: "from-primary to-terrun-lime-light" },
-  { name: "COUREURS2N8", members: 21, level: 110, color: "from-gray-300 to-gray-400" },
-  { name: "URBANSTRIDES", members: 9, level: 93, color: "from-orange-300 to-orange-400" },
-  { name: "RUNNNNNFORLIFE", members: 8, level: 92, color: "from-gray-400 to-gray-500" },
-  { name: "ÇACOURTBIEN", members: 17, level: 80, color: "from-primary/60 to-primary" },
-];
-
 const stats = [
   { icon: Route, label: "Total km parcourus", value: "132 km" },
   { icon: TrendingUp, label: "Meilleure allure", value: "4:32/km" },
@@ -51,16 +43,16 @@ const rewards = [
 ]
 
 const monthContribution = {
-  points: "1,240",
-  tiles: "67",
+  points: "370",
+  tiles: "37",
   internalRank: "#3 / 12",
 };
 
 const teamPerformance = [
-  { month: "Novembre", points: "1,240", tiles: "67", rank: "#3" },
-  { month: "Octobre", points: "980", tiles: "83", rank: "#5" },
-  { month: "Septembre", points: "1,450", tiles: "86", rank: "#2" },
-  { month: "Aout", points: "760", tiles: "59", rank: "#75" },
+  { month: "Novembre", points: "370", tiles: "37", rank: "#3" },
+  { month: "Octobre", points: "560", tiles: "56", rank: "#5" },
+  { month: "Septembre", points: "326", tiles: "31", rank: "#2" },
+  { month: "Aout", points: "768", tiles: "65", rank: "#4" },
 ];
 
 
@@ -77,10 +69,10 @@ export default function Profile() {
 
   const profile = {
     first_name: "Victoire",
-    total_distance_km: 85, // Matches "Objectif du mois" progress
+    total_distance_km: 12, // Matches "Objectif du mois" progress
     total_runs: 42,
     total_time_seconds: 153000, // approx 42.5 hours
-    monthly_goal_km: 100
+    monthly_goal_km: 50
   };
 
   return (
@@ -294,7 +286,7 @@ function SoloStats({ onBack }: { onBack: () => void }) {
                 <div>
                   <span className="text-sm font-semibold">{s.season}</span>
                   {s.active && (
-                    <span className="ml-2 text-[10px] font-bold text-accent">
+                    <span className="ml-2 text-[10px] font-bold text-[#9AA800]">
                       EN COURS
                     </span>
                   )}
@@ -311,7 +303,7 @@ function SoloStats({ onBack }: { onBack: () => void }) {
           <div className="flex justify-end mt-2">
             <button
               onClick={() => setShowAllSeasons(!showAllSeasons)}
-              className="text-xs text-accent font-medium hover:underline"
+              className="text-xs text-gray-500 font-medium hover:text-[#000]"
             >
               {showAllSeasons ? "Voir moins" : "Voir plus"}
             </button>
@@ -359,8 +351,8 @@ function SoloStats({ onBack }: { onBack: () => void }) {
                 className={cn(
                   "flex flex-col items-center gap-1.5 rounded-xl border p-3",
                   b.unlocked
-                    ? "border-accent/30 bg-card"
-                    : "border-border bg-secondary opacity-50"
+                    ? "border-accent/70 bg-card"
+                    : "border-border bg-secondary opacity-30"
                 )}
               >
                 <span className="text-2xl">{b.icon}</span>
@@ -458,11 +450,11 @@ function TeamTab({ onBack }: { onBack: () => void }) {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
-            <span className="text-2xl font-black text-foreground">2.165</span>
+            <span className="text-2xl font-black text-foreground">1 690</span>
             <span className="text-[10px] font-medium text-muted-foreground">RUNITS total équipe</span>
           </div>
           <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
-            <span className="text-2xl font-black text-foreground">140</span>
+            <span className="text-2xl font-black text-foreground">169</span>
             <span className="text-[10px] font-medium text-muted-foreground">KM total équipe</span>
           </div>
         </div>
@@ -499,67 +491,55 @@ function TeamTab({ onBack }: { onBack: () => void }) {
       </section>
 
       {/* Team internal ranking */}
-<section aria-label="Classement interne equipe">
-  <div className="mb-3 flex items-center gap-2">
-    <Trophy className="h-4 w-4 text-accent" />
-    <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
-      Classement Interne
-    </h2>
-  </div>
-
-  <div className="flex flex-col gap-2">
-    {[
-      { name: "Lisa", xp: 12450 },
-      { name: "Pierre-Olivier", xp: 11890 },
-      { name: "Victoire", xp: 10230 },
-      { name: "Corentin", xp: 9840 },
-      { name: "Mathis", xp: 8730 },
-    ].map((member, i) => (
-      <div
-        key={i}
-        className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
-      >
-        {/* Left content */}
-        <div className="flex items-center gap-3">
-          
-          {/* Ranking Icon */}
-          <div
-            className={`
-              flex h-8 w-8 items-center justify-center rounded-full font-bold text-xs
-              ${
-                i === 0
-                  ? "bg-yellow-400 text-black"
-                  : i === 1
-                  ? "bg-gray-300 text-black"
-                  : i === 2
-                  ? "bg-orange-400 text-black"
-                  : "bg-muted text-foreground"
-              }
-            `}
-          >
-            {i + 1}
-          </div>
-
-          {/* Name */}
-          <div className="flex flex-col">
-            <span className="text-xs font-black uppercase text-foreground">
-              {member.name}
-            </span>
-          </div>
+      <section aria-label="Classement interne equipe">
+        <div className="mb-3 flex items-center gap-2">
+          <Trophy className="h-4 w-4 text-accent" />
+          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
+            Classement Interne
+          </h2>
         </div>
 
-        {/* XP */}
-        <div className="text-right">
-          <span className="text-sm font-black text-foreground">
-            {member.xp}
-          </span>
-          <span className="text-xs font-bold text-muted-foreground">  RUNITS</span>
-        </div>
+        <div className="space-y-3">
+        {[
+          { name: "Alex_Runner83", points: 530, rank: 1, icon: MapPin },
+          { name: "SarahDesign", points: 420, rank: 2, icon: MapPin },
+          { name: "Victoire", points: 370, rank: 12, icon: MapPin },
+          { name: "Tom-Dev", points: 220, rank: 3, icon: MapPin },
+          { name: "HectorCo", points: 150, rank: 4, icon: MapPin },
+        ]
+          // Afficher d’abord les 4 premiers puis la Victoire
+          .sort((a, b) => (a.rank <= 4 && b.rank <= 4 ? a.rank - b.rank : a.rank === 12 ? 1 : b.rank === 12 ? -1 : a.rank - b.rank))
+          .map((contributor) => (
+            <div
+              key={contributor.rank}
+              className={cn(
+                "flex items-center justify-between p-3 bg-card rounded-xl border border-border shadow-sm relative overflow-hidden group",
+                contributor.rank === 12 ? "bg-[#C4D600]/10 border-[#C4D600]" : ""
+              )}
+            >
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#C4D600] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+              <div className="flex items-center gap-4">
+                <span className="font-display text-2xl text-[#000] w-6 text-center italic">
+                  #{contributor.rank}
+                </span>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#C4D600]/10 border border-[#C4D600]/20 flex items-center justify-center">
+                    <contributor.icon className="w-5 h-5 text-[#C4D600]" />
+                  </div>
+                  <span className="font-bold text-base">{contributor.name}</span>
+                </div>
+              </div>
+
+              <span className="font-display text-lg">
+                {contributor.points}{" "}
+                <span className="text-xs font-sans font-normal text-muted-foreground">RUNITS</span>
+              </span>
+            </div>
+          ))}
       </div>
-    ))}
-  </div>
-</section>
-
+      </section>
     </div>
     </MobileLayout>
   );

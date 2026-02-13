@@ -18,10 +18,10 @@ export function BottomNav() {
 
         {/* Left Bar Part - Rounded Start */}
         <div className="flex-1 bg-black rounded-l-full h-16 flex items-center justify-around pl-4 pr-0 relative z-10 space-x-6">
-          <NavLink to="/" className={({ isActive }) => cn("transition-all duration-300 transform active:scale-95 px-2", isActive ? "text-[#D7FF00]" : "text-white/60 hover:text-white")}>
+          <NavLink to="/" className={({ isActive }) => cn("transition-all duration-300 transform active:scale-95 px-2", isActive ? "text-[#C6D300]" : "text-white/60 hover:text-white")}>
             <Home className="w-6 h-6" />
           </NavLink>
-          <NavLink to="/community" className={({ isActive }) => cn("transition-all duration-300 transform active:scale-95", isActive ? "text-[#D7FF00]" : "text-white/60 hover:text-white")}>
+          <NavLink to="/community" className={({ isActive }) => cn("transition-all duration-300 transform active:scale-95", isActive ? "text-[#C6D300]" : "text-white/60 hover:text-white")}>
             <Users className="w-6 h-6" />
           </NavLink>
         </div>
@@ -38,7 +38,7 @@ export function BottomNav() {
           {/* Floating Action Button - Properly Nested */}
           <div className="absolute -top-6 left-1/2 -translate-x-1/2">
             <NavLink to="/run">
-              <div className="w-16 h-16 rounded-full bg-[#D7FF00] flex items-center justify-center shadow-[0_0_20px_#D7FF0080] transform transition-transform active:scale-90 relative z-20 group border-[4px] border-[#f2f2f2] dark:border-[#09090b]">
+              <div className="w-16 h-16 rounded-full bg-[#C6D300] flex items-center justify-center shadow-[0_0_20px_#D7FF0080] transform transition-transform active:scale-90 relative z-20 group border-[4px] border-[#f2f2f2] dark:border-[#09090b]">
                 {/* Runner Icon */}
                 <img src="dist/images/icon_Terrun.svg" className="w-10 h-10" alt="Target icon" />
               </div>

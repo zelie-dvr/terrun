@@ -113,7 +113,7 @@ export default function Profile() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-4xl">
               <img 
-                src="dist/images/profile-picture.png" 
+                src="dist/images/individual-avatar.png" 
                 alt="Profile" 
                 className="w-26 h-26 object-cover rounded-full" 
               />

@@ -54,7 +54,7 @@ export default function Home() {
         {/* Récapitulatifs */}
         <section className="terrun-card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-medium">Récapitulatif</h2>
+            <h2 className="font-medium">Récapitulatif du mois</h2>
           </div>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -62,8 +62,8 @@ export default function Home() {
               <p className="stat-label">Ce mois-ci</p>
             </div>
             <div>
-              <p className="stat-value">1 200 XP</p>
-              <p className="stat-label">Points</p>
+              <p className="stat-value">1 200</p>
+              <p className="stat-label">Runits</p>
             </div>
             <div>
               <p className="stat-value">15</p>

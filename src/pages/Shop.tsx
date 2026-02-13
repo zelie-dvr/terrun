@@ -23,7 +23,7 @@ export default function Shop() {
         {/* Header */}
         <header className="flex items-center justify-between mb-6">
           <h1 className="font-display text-3xl">BOUTIQUE</h1>
-          <div className="flex items-center gap-2 bg-primary rounded-full px-4 py-2">
+          <div className="flex items-center gap-2 bg-[#C4D600] rounded-full px-4 py-2">
             <span className="font-display">2,450</span>
             <span>
               <img
@@ -87,7 +87,7 @@ export default function Shop() {
         </section>
 
         {/* Coming soon banner */}
-        <div className="mt-6 bg-gradient-to-r from-primary to-terrun-lime-light rounded-2xl p-4 text-center">
+        <div className="mt-6 bg-gradient-to-r from-[#58c0fa] to-[#fff] rounded-2xl p-4 text-center">
           <p className="font-display text-lg">
             <span className="align-middle inline-block mr-2">
               <Flame className="w-5 h-5 text-black" />

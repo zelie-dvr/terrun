@@ -17,15 +17,15 @@ const topTeams = [
 const stats = [
   { icon: Route, label: "Total km parcourus", value: "132 km" },
   { icon: TrendingUp, label: "Meilleure allure", value: "4:32/km" },
-  { icon: Map, label: "Total zones capturées", value: "87" },
+  { icon: Map, label: "Territoires conquis", value: "87" },
   { icon: Trophy, label: "Meilleure position saison", value: "#8" },
 ]
 
 const seasonHistory = [
-  { season: "Saison 4 (actuelle)", rank: "#24", xp: "8,450 XP", active: true },
-  { season: "Saison 3", rank: "#12", xp: "14,200 XP", active: false },
-  { season: "Saison 2", rank: "#31", xp: "9,800 XP", active: false },
-  { season: "Saison 1", rank: "#8", xp: "16,500 XP", active: false },
+  { season: "Saison 4 (actuelle)", rank: "#24", xp: "8,450 RUNITS", active: true },
+  { season: "Saison 3", rank: "#12", xp: "14,200 RUNITS", active: false },
+  { season: "Saison 2", rank: "#31", xp: "9,800 RUNITS", active: false },
+  { season: "Saison 1", rank: "#8", xp: "16,500 RUNITS", active: false },
 ]
 
 // const records = [
@@ -76,7 +76,7 @@ export default function Profile() {
   }
 
   const profile = {
-    first_name: "Pierre",
+    first_name: "Victoire",
     total_distance_km: 85, // Matches "Objectif du mois" progress
     total_runs: 42,
     total_time_seconds: 153000, // approx 42.5 hours
@@ -434,7 +434,7 @@ function TeamTab({ onBack }: { onBack: () => void }) {
           <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
             <Zap className="h-4 w-4 text-accent" />
             <span className="text-lg font-black text-foreground">{monthContribution.points}</span>
-            <span className="text-[9px] font-medium uppercase text-muted-foreground">Points</span>
+            <span className="text-[9px] font-medium uppercase text-muted-foreground">RUNITS</span>
           </div>
           <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
             <Map className="h-4 w-4 text-accent" />
@@ -457,12 +457,12 @@ function TeamTab({ onBack }: { onBack: () => void }) {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
-            <span className="text-2xl font-black text-foreground">7:42</span>
-            <span className="text-[10px] font-medium text-muted-foreground">km/h vitesse moy.</span>
+            <span className="text-2xl font-black text-foreground">2.165</span>
+            <span className="text-[10px] font-medium text-muted-foreground">RUNITS total équipe</span>
           </div>
           <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
             <span className="text-2xl font-black text-foreground">140</span>
-            <span className="text-[10px] font-medium text-muted-foreground">km total équipe</span>
+            <span className="text-[10px] font-medium text-muted-foreground">KM total équipe</span>
           </div>
         </div>
       </section>
@@ -478,7 +478,7 @@ function TeamTab({ onBack }: { onBack: () => void }) {
             <thead>
               <tr className="border-b border-border bg-secondary">
                 <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Mois</th>
-                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Points</th>
+                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">RUNITS</th>
                 <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">KM</th>
                 <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Rang</th>
               </tr>
@@ -497,36 +497,68 @@ function TeamTab({ onBack }: { onBack: () => void }) {
         </div>
       </section>
 
-      {/* Team ranking */}
-      <section aria-label="Classement equipe">
-        <div className="mb-3 flex items-center gap-2">
-          <BarChart3 className="h-4 w-4 text-accent" />
-          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Classement Top #5</h2>
+      {/* Team internal ranking */}
+<section aria-label="Classement interne equipe">
+  <div className="mb-3 flex items-center gap-2">
+    <Trophy className="h-4 w-4 text-accent" />
+    <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
+      Classement Interne
+    </h2>
+  </div>
+
+  <div className="flex flex-col gap-2">
+    {[
+      { name: "Lisa", xp: 12450 },
+      { name: "Pierre-Olivier", xp: 11890 },
+      { name: "Victoire", xp: 10230 },
+      { name: "Corentin", xp: 9840 },
+      { name: "Mathis", xp: 8730 },
+    ].map((member, i) => (
+      <div
+        key={i}
+        className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
+      >
+        {/* Left content */}
+        <div className="flex items-center gap-3">
+          
+          {/* Ranking Icon */}
+          <div
+            className={`
+              flex h-8 w-8 items-center justify-center rounded-full font-bold text-xs
+              ${
+                i === 0
+                  ? "bg-yellow-400 text-black"
+                  : i === 1
+                  ? "bg-gray-300 text-black"
+                  : i === 2
+                  ? "bg-orange-400 text-black"
+                  : "bg-muted text-foreground"
+              }
+            `}
+          >
+            {i + 1}
+          </div>
+
+          {/* Name */}
+          <div className="flex flex-col">
+            <span className="text-xs font-black uppercase text-foreground">
+              {member.name}
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col gap-2">
-          {[
-            { name: "TeRunner83", members: 12, level: 114, color: "bg-accent" },
-            { name: "CourSe2N8", members: 21, level: 110, color: "bg-accent/70" },
-            { name: "UrbanStrides", members: 9, level: 93, color: "bg-orange-300" },
-            { name: "RunnnnForLife", members: 8, level: 92, color: "bg-secondary" },
-            { name: "CaCourtBien", members: 17, level: 80, color: "bg-secondary" },
-          ].map((team, i) => (
-            <div key={i} className="flex items-center overflow-hidden rounded-xl border border-border bg-card">
-              <div className={`flex flex-1 flex-col justify-center p-3 ${team.color} ${i < 3 ? "text-accent-foreground" : "text-foreground"}`}>
-                <span className="text-xs font-black uppercase">{team.name}</span>
-                <span className="flex items-center gap-1 text-[10px] opacity-80">
-                  <Users className="h-3 w-3" />
-                  {team.members}
-                </span>
-              </div>
-              <div className="px-4 py-3 text-right">
-                <span className="text-xs font-bold text-muted-foreground">Niv. </span>
-                <span className="text-sm font-black text-foreground">{team.level}</span>
-              </div>
-            </div>
-          ))}
+
+        {/* XP */}
+        <div className="text-right">
+          <span className="text-sm font-black text-foreground">
+            {member.xp}
+          </span>
+          <span className="text-xs font-bold text-muted-foreground">  RUNITS</span>
         </div>
-      </section>
+      </div>
+    ))}
+  </div>
+</section>
+
     </div>
   );
 }

@@ -490,7 +490,7 @@ function TeamTab({ onBack }: { onBack: () => void }) {
         </div>
       </section>
 
-      {/* Team internal ranking */}
+      {/* Team internal ranking 
       <section aria-label="Classement interne equipe">
         <div className="mb-3 flex items-center gap-2">
           <Trophy className="h-4 w-4 text-accent" />
@@ -544,6 +544,7 @@ function TeamTab({ onBack }: { onBack: () => void }) {
           ))}
       </div>
       </section>
+      */}
     </div>
     </MobileLayout>
   );

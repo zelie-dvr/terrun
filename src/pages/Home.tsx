@@ -3,48 +3,35 @@ import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useState, useEffect, ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Home() {
   const { user } = useAuth();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [period, setPeriod] = useState("Ce mois");
+  const location = useLocation();
+  const navigate = useNavigate();
 
+  // Notification persistante "Activité sauvegardée"
   useEffect(() => {
-    if (searchParams.get("saved") === "true") {
-      const xp = searchParams.get("xp") || "0";
+    if (location.state?.showToast) {
+      const xp = location.state.xp || 200;
 
-      // Delay slightly to ensure UI is ready
-      setTimeout(() => {
-        toast.custom((t) => (
-          <div className="bg-black text-white px-4 py-3 rounded-xl flex items-center justify-center gap-3 shadow-2xl border border-white/10 w-full animate-in slide-in-from-bottom-20 fade-in duration-500 ease-out">
-            <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/50 flex-shrink-0">
-              <svg
-                className="w-3.5 h-3.5 text-green-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={3}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
-            <span className="font-medium text-sm flex-1 text-center">
-              Activité sauvegardée ! <span className="text-[#D7FF00]">+{xp} XP</span> gagnés
-            </span>
-          </div>
-        ), { duration: 4000 });
-      }, 100);
+      toast.custom((t) => (
+        <div className="bg-zinc-950/90 backdrop-blur-md text-white px-5 py-3 rounded-full border border-[#D7FF00]/30 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-3 animate-in slide-in-from-bottom-5 fade-in duration-300 w-auto min-w-[280px] mx-auto">
+          <div className="w-2 h-2 rounded-full bg-[#D7FF00] animate-pulse shadow-[0_0_10px_#D7FF00]" />
+          <span className="font-medium text-sm tracking-wide">Activité sauvegardée <span className="font-bold text-[#D7FF00] ml-1">+{xp} XP</span></span>
+        </div>
+      ), {
+        duration: 4000,
+        position: 'bottom-center',
+        className: "!bg-transparent !border-0 !shadow-none !p-0"
+      });
 
-      // Clean params
-      setSearchParams({});
+      // Nettoyage du state pour éviter le re-déclenchement
+      navigate(location.pathname, { replace: true, state: {} });
     }
-  }, [searchParams, setSearchParams]);
+  }, [location, navigate]);
 
   // Hardcoded profile data for presentation
   const profile = {
@@ -67,7 +54,7 @@ export default function Home() {
   }, [user]);
   */
 
-  const firstName = "Pierre-Olivier";
+  const firstName = "Victoire";
 
   return (
     <MobileLayout>
@@ -76,7 +63,7 @@ export default function Home() {
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full border-2 border-primary overflow-hidden shadow-md">
-              <img src="/profile-picture.jpg" alt="Profile" className="w-full h-full object-cover" />
+              <img src="dist/images/profile-picture.png" alt="Profile" className="w-full h-full object-cover" />
             </div>
             <span className="font-medium text-lg">
               Salut, <span className="font-bold text-primary dark:text-terrun-lime-500">{firstName}</span> 👋
@@ -93,7 +80,7 @@ export default function Home() {
         {/* Récapitulatifs */}
         <section className="terrun-card">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-medium">Récapitulatif</h2>
+            <h2 className="font-medium">Récapitulatif du mois</h2>
           </div>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -101,8 +88,8 @@ export default function Home() {
               <p className="stat-label">Ce mois-ci</p>
             </div>
             <div>
-              <p className="stat-value">1 200 XP</p>
-              <p className="stat-label">Points</p>
+              <p className="stat-value">1 200</p>
+              <p className="stat-label">Runits</p>
             </div>
             <div>
               <p className="stat-value">15</p>
@@ -162,29 +149,73 @@ export default function Home() {
         </section>
 
         {/* Carte interactive */}
-        <section>
-          <h2 className="section-title mb-3">CARTE INTERACTIVE</h2>
-          <div className="w-full h-64 rounded-2xl overflow-hidden relative">
-            <img
-              src="/map-interactive.png"
-              alt="Carte interactive"
-              className="block w-full h-full object-cover"
-            />
+        <section aria-label="Carte interactive">
+          <h2 className="mb-1 text-lg font-black uppercase tracking-wide text-foreground">
+            Carte Interactive
+          </h2>
+          <p className="mb-3 text-xs text-muted-foreground">
+            Prenez connaissance des avancées des zones conquises, perdues ou contestées.
+          </p>
+
+          <div className="relative overflow-hidden rounded-2xl border border-border">
+            {/* Map container */}
+            <div className="relative h-56 bg-secondary">
+              {/* Grid overlay */}
+              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 240" fill="none" aria-hidden="true">
+                {/* Lignes verticales */}
+                {Array.from({ length: 20 }).map((_, i) => (
+                  <line key={`v-${i}`} x1={i * 20} y1="0" x2={i * 20} y2="240" stroke="hsl(var(--border))" strokeWidth="0.5" />
+                ))}
+                {/* Lignes horizontales */}
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <line key={`h-${i}`} x1="0" y1={i * 20} x2="400" y2={i * 20} stroke="hsl(var(--border))" strokeWidth="0.5" />
+                ))}
+
+                {/* Zones conquises */}
+                <rect x="200" y="40" width="80" height="80" fill="hsl(var(--terrun-lime))" opacity="0.35" rx="4" />
+                <rect x="280" y="80" width="60" height="60" fill="hsl(var(--terrun-lime))" opacity="0.25" rx="4" />
+                <rect x="220" y="120" width="40" height="60" fill="hsl(var(--terrun-lime))" opacity="0.3" rx="4" />
+
+                {/* Zones contestées */}
+                <rect x="100" y="60" width="60" height="80" fill="#fb923c" opacity="0.25" rx="4" />
+                <rect x="60" y="100" width="40" height="60" fill="#a9d5d2" opacity="0.2" rx="4" />
+                <rect x="140" y="140" width="60" height="40" fill="#a9d5d2" opacity="0.25" rx="4" />
+
+                {/* Rues */}
+                <line x1="0" y1="100" x2="400" y2="100" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
+                <line x1="180" y1="0" x2="180" y2="240" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
+              </svg>
+
+              {/* Marker central */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="relative">
+                  <div className="h-4 w-4 rounded-full bg-accent shadow-lg ring-4 ring-accent/20" />
+                  <div className="absolute -inset-2 animate-ping rounded-full bg-accent/30" />
+                </div>
+              </div>
+
+              {/* Bouton carte */}
+              <button
+                className="absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg"
+                aria-label="Ouvrir la carte"
+              >
+                <MapPin className="h-5 w-5" />
+              </button>
+            </div>
+
             {/* Légende */}
-            <div className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm border border-white/20">
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full shadow-[0_0_8px_rgba(215,255,0,0.6)]" style={{ backgroundColor: "#D7FF00" }}></div>
-                  <span className="text-[10px] font-medium leading-none text-black">Zones capturées</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.4)]"></div>
-                  <span className="text-[10px] font-medium leading-none text-black">Zones contestées</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-teal-400 shadow-[0_0_8px_rgba(45,212,191,0.4)]"></div>
-                  <span className="text-[10px] font-medium leading-none text-black">Zones des autres</span>
-                </div>
+            <div className="flex items-center gap-4 border-t border-border bg-card px-4 py-2.5">
+              <div className="flex items-center gap-1.5">
+                <div className="h-3 w-3 rounded-sm bg-accent/40" />
+                <span className="text-[10px] font-medium text-muted-foreground">Zones conquises</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="h-3 w-3 rounded-sm bg-[#a9d5d2]" />
+                <span className="text-[10px] font-medium text-muted-foreground">Zones perdues</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="h-3 w-3 rounded-sm bg-orange-300/50" />
+                <span className="text-[10px] font-medium text-muted-foreground">Zones adverses</span>
               </div>
             </div>
           </div>
@@ -194,7 +225,7 @@ export default function Home() {
         <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="section-title">ÉVÈNEMENTS LOCAUX</h2>
-            <button className="text-sm text-muted-foreground">Voir tout</button>
+            <button className="text-sm text-gray-500 font-medium hover:underline">Voir tout</button>
           </div>
           <div className="flex gap-3 overflow-x-auto hide-scrollbar -mx-4 px-4">
             <EventCard

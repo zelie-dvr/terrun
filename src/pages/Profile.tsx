@@ -1,27 +1,10 @@
 import { MobileLayout } from "@/components/layout/MobileLayout";
-import { Bell, Settings, Trophy, ChevronRight, ArrowLeft, Share2, Moon, Sun, Laptop } from "lucide-react";
-import { useState } from "react";
+import { Bell, Settings, Trophy, ChevronRight, ArrowLeft, Share2, Award, Gift, History, TrendingUp, Activity, MapPin, Compass, Zap, Users, BarChart3 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/components/theme-provider";
+import { Route, Map, Calendar } from "lucide-react";
 
 type View = "main" | "solo" | "team";
-
-const weekData = [
-  { day: "L", value: 3000 },
-  { day: "M", value: 5000 },
-  { day: "M", value: 7000 },
-  { day: "J", value: 10000, highlight: true },
-  { day: "V", value: 6000 },
-  { day: "S", value: 8000 },
-  { day: "D", value: 4000 },
-];
-
-const places = [
-  { name: "Tour Eiffel", location: "Paris", image: "🗼" },
-  { name: "UFR Ingémédia", location: "Toulon", image: "🏫" },
-  { name: "Monument aux morts de l'Armée d'Orient", location: "Marseille", image: "🏛️" },
-  { name: "Pont des Marchands", location: "Narbonne", image: "🌉" },
-];
 
 const topTeams = [
   { name: "TERRUNNER83", members: 12, level: 114, color: "from-primary to-terrun-lime-light" },
@@ -31,8 +14,57 @@ const topTeams = [
   { name: "ÇACOURTBIEN", members: 17, level: 80, color: "from-primary/60 to-primary" },
 ];
 
+const stats = [
+  { icon: Route, label: "Total km parcourus", value: "132 km" },
+  { icon: TrendingUp, label: "Meilleure allure", value: "4:32/km" },
+  { icon: Map, label: "Total zones capturées", value: "87" },
+  { icon: Trophy, label: "Meilleure position saison", value: "#8" },
+]
+
+const seasonHistory = [
+  { season: "Saison 4 (actuelle)", rank: "#24", xp: "8,450 XP", active: true },
+  { season: "Saison 3", rank: "#12", xp: "14,200 XP", active: false },
+  { season: "Saison 2", rank: "#31", xp: "9,800 XP", active: false },
+  { season: "Saison 1", rank: "#8", xp: "16,500 XP", active: false },
+]
+
+// const records = [
+ // { label: "Plus de km en un mois^", value: "42 km" },
+  // { label: "Plus de tuiles en un jour", value: "14" },
+//  { label: "Plus longue serie de jours", value: "12 jours" },
+ // { label: "Meilleure allure", value: "4:32/km" },
+// ]
+
+const badges = [
+  { name: "Premier pas", icon: <Award />, unlocked: true },
+  { name: "Marathonien", icon: <Activity />, unlocked: true },
+  { name: "Endurant", icon: <Calendar />, unlocked: true },
+  { name: "Éclaireur", icon: <Compass />, unlocked: true },
+  { name: "Sprinteur", icon: <Zap />, unlocked: false },
+  { name: "Territory Master", icon: <MapPin />, unlocked: false },
+]
+
+const rewards = [
+  { name: "Avatar Premium Saison 3", claimed: true },
+  { name: "Badge Or - Top 15", claimed: true },
+  { name: "Titre: Sprinter d'Elite", claimed: false },
+]
+
+const monthContribution = {
+  points: "1,240",
+  tiles: "67",
+  internalRank: "#3 / 12",
+};
+
+const teamPerformance = [
+  { month: "Novembre", points: "1,240", tiles: "67", rank: "#3" },
+  { month: "Octobre", points: "980", tiles: "83", rank: "#5" },
+  { month: "Septembre", points: "1,450", tiles: "86", rank: "#2" },
+  { month: "Aout", points: "760", tiles: "59", rank: "#75" },
+];
+
+
 export default function Profile() {
-  const { theme, setTheme } = useTheme();
   const [view, setView] = useState<View>("main");
 
   if (view === "solo") {
@@ -40,7 +72,7 @@ export default function Profile() {
   }
 
   if (view === "team") {
-    return <TeamStats onBack={() => setView("main")} />;
+    return <TeamTab onBack={() => setView("main")} />;
   }
 
   const profile = {
@@ -80,7 +112,11 @@ export default function Profile() {
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-4xl">
-                👩
+              <img 
+                src="dist/images/profile-picture.png" 
+                alt="Profile" 
+                className="w-26 h-26 object-cover rounded-full" 
+              />
               </div>
             </div>
             <span className="absolute top-0 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
@@ -88,22 +124,11 @@ export default function Profile() {
             </span>
           </div>
 
-          <h1 className="font-display text-2xl">Marie Dupont</h1>
+          <h1 className="font-display text-2xl">Victoire Dubust</h1>
           <p className="text-sm text-muted-foreground">Toulon, France</p>
 
           {/* Action buttons */}
           <div className="flex gap-4 mt-2">
-            <button
-              className="p-2"
-              onClick={() => {
-                const nextTheme = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
-                setTheme(nextTheme);
-              }}
-            >
-              {theme === "light" && <Sun className="w-5 h-5" />}
-              {theme === "dark" && <Moon className="w-5 h-5" />}
-              {theme === "system" && <Laptop className="w-5 h-5" />}
-            </button>
             <button className="p-2">
               <Bell className="w-5 h-5" />
             </button>
@@ -137,10 +162,30 @@ export default function Profile() {
             </div>
           </div>
         </div>
-        <div className="terrun-badge2 mb-3 mt-2">
-          <span>DISTANCE ACCUMULÉE</span>
-          <span className="font-display text-lg">132 KM</span>
-        </div>
+
+        {/* Stats permanentes */}
+        <section aria-label="Statistiques permanentes" className="mt-6 mb-5">
+          <h2 className="font-display text-xl mb-4">
+            STATS PERMANENTES
+          </h2>
+
+          <div className="grid grid-cols-2 gap-3">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-4"
+              >
+                <stat.icon className="h-5 w-5 text-accent" />
+                <span className="text-xl font-black text-foreground">
+                  {stat.value}
+                </span>
+                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
 
 
         {/* Progress section */}
@@ -205,207 +250,283 @@ export default function Profile() {
 }
 
 function SoloStats({ onBack }: { onBack: () => void }) {
-  const maxValue = Math.max(...weekData.map((d) => d.value));
+  useEffect(() => {
+    // Quand le composant est monté, on scroll en haut
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
+  const [showAllSeasons, setShowAllSeasons] = useState(false);
+  const displayedSeasons = showAllSeasons ? seasonHistory : seasonHistory.slice(0, 2);
+  
   return (
+    
     <MobileLayout>
-      <div className="p-4 animate-fade-in">
-        <div className="terrun-card mb-4">
-          <div className="flex items-center justify-between mb-4">
-            <button onClick={onBack} className="flex items-center gap-2">
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-display text-xl">SOLO</span>
-            </button>
-            <button className="p-2">
-              <span className="text-xl">📊</span>
-            </button>
-          </div>
+      <div className="p-4 animate-fade-in flex flex-col gap-4">
 
-          <p className="text-sm text-muted-foreground mb-6">
-            Tu es beaucoup plus investi que la semaine dernière. Continue sur
-            cette lancée.
-          </p>
-
-          {/* Bar chart */}
-          <div className="bg-muted rounded-xl p-4">
-            <div className="flex items-end justify-between h-40 mb-2">
-              {weekData.map((day, i) => (
-                <div key={i} className="flex flex-col items-center gap-1 flex-1">
-                  <div
-                    className={cn(
-                      "w-6 rounded-t transition-all",
-                      day.highlight ? "bg-primary" : "bg-foreground"
-                    )}
-                    style={{ height: `${(day.value / maxValue) * 100}%` }}
-                  />
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-between text-xs text-muted-foreground">
-              {weekData.map((day, i) => (
-                <span key={i} className="flex-1 text-center">
-                  {day.day}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Improvement indicator */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center">
-            <span className="font-display text-2xl">📈</span>
-          </div>
-          <div>
-            <p className="font-display text-4xl">+88%</p>
-            <p className="text-sm text-muted-foreground">
-              Les chiffres parlent d'eux-mêmes.
-            </p>
-          </div>
-        </div>
-
-        {/* Average pace */}
-        <div className="terrun-card mb-4">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-display text-lg">ALLURE MOYENNE</h3>
-            <span className="text-xl">⏱️</span>
-          </div>
-          <p className="text-xs text-muted-foreground mb-2">
-            Données de votre dernière courses.
-          </p>
-          <p className="font-display text-5xl mb-3">5:27/KM</p>
-          <button className="flex items-center gap-2 text-sm font-medium ml-auto">
-            PARTAGER
-            <Share2 className="w-4 h-4" />
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-2">
+          <button onClick={onBack} className="flex items-center gap-2">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-display text-xl">INDIVIDUEL</span>
           </button>
         </div>
 
-        {/* Titles */}
-        <div className="terrun-card">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-display text-lg">TITRES</h3>
-            <Trophy className="w-5 h-5" />
-          </div>
-          <p className="text-xs text-muted-foreground mb-3">
-            Le meilleur de vos victoires, ici.
-          </p>
-          <div className="flex gap-2 mb-3">
-            <div className="w-12 h-12 rounded-full bg-terrun-gold flex items-center justify-center text-xl">
-              🏆
-            </div>
-            <div className="w-12 h-12 rounded-full bg-terrun-bronze flex items-center justify-center text-xl">
-              🏆
-            </div>
-            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-xl">
-              🏆
-            </div>
-            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-xl">
-              🏆
-            </div>
-          </div>
-          <button className="flex items-center gap-2 text-sm font-medium ml-auto">
-            PARTAGER
-            <Share2 className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </MobileLayout>
-  );
-}
-
-function TeamStats({ onBack }: { onBack: () => void }) {
-  return (
-    <MobileLayout>
-      <div className="p-4 animate-fade-in">
-        <div className="terrun-card mb-4">
-          <div className="flex items-center justify-between mb-6">
-            <button onClick={onBack} className="flex items-center gap-2">
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-display text-xl">TEAM</span>
-            </button>
-            <button className="p-2">
-              <span className="text-xl">📊</span>
-            </button>
+        {/* Historique des saisons */}
+        <section>
+          <div className="mb-3 flex items-center gap-2">
+            <History className="h-4 w-4 text-accent" />
+            <h2 className="text-sm font-medium uppercase tracking-wide">
+              Historique des saisons
+            </h2>
           </div>
 
-          {/* Team stats */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-muted rounded-xl p-4">
-              <span className="text-3xl mb-2 block">⏱️</span>
-              <p className="font-display text-3xl">10KM/H</p>
-            </div>
-            <div className="bg-muted rounded-xl p-4">
-              <span className="text-3xl mb-2 block">👟</span>
-              <p className="font-display text-3xl">140KM</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Notable places */}
-        <div className="terrun-card mb-4">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-display text-lg">LIEUX INSOLITES</h3>
-            <span className="text-xl">🏔️</span>
-          </div>
-          <p className="text-xs text-muted-foreground mb-4">
-            Données du dernier groupe.
-          </p>
-
-          <div className="space-y-3 mb-3">
-            {places.map((place, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-lg">
-                  {place.image}
-                </div>
-                <div>
-                  <p className="font-medium text-sm">{place.name}</p>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    <span>📍</span> {place.location}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <button className="flex items-center gap-2 text-sm font-medium ml-auto">
-            PARTAGER
-            <Share2 className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Top teams */}
-        <div className="terrun-card">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-display text-lg">CLASSEMENT TOP #5</h3>
-            <Trophy className="w-5 h-5" />
-          </div>
-          <p className="text-xs text-muted-foreground mb-4">
-            Ensemble, plus forts.
-          </p>
-
-          <div className="space-y-2">
-            {topTeams.map((team, i) => (
+          <div className="flex flex-col gap-2">
+            {displayedSeasons.map((s) => (
               <div
-                key={i}
+                key={s.season}
                 className={cn(
-                  "rounded-xl p-3 bg-gradient-to-r",
-                  team.color
+                  "flex items-center justify-between rounded-xl border p-3",
+                  s.active
+                    ? "border-accent/40 bg-accent/5"
+                    : "border-border bg-card"
                 )}
               >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-display text-sm">{team.name}</p>
-                    <p className="text-xs opacity-70 flex items-center gap-1">
-                      <span>👥</span> {team.members}
-                    </p>
-                  </div>
-                  <p className="font-display">NIV. {team.level}</p>
+                <div>
+                  <span className="text-sm font-semibold">{s.season}</span>
+                  {s.active && (
+                    <span className="ml-2 text-[10px] font-bold text-accent">
+                      EN COURS
+                    </span>
+                  )}
+                </div>
+                <div className="text-right">
+                  <span className="text-sm font-bold">{s.rank}</span>
+                  <span className="ml-2 text-xs text-muted-foreground">{s.xp}</span>
                 </div>
               </div>
             ))}
           </div>
-        </div>
+
+          {seasonHistory.length > 2 && (
+          <div className="flex justify-end mt-2">
+            <button
+              onClick={() => setShowAllSeasons(!showAllSeasons)}
+              className="text-xs text-accent font-medium hover:underline"
+            >
+              {showAllSeasons ? "Voir moins" : "Voir plus"}
+            </button>
+          </div>
+        )}
+        </section>
+
+        {/* Records
+        <section>
+          <div className="mb-3 flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-accent" />
+            <h2 className="text-sm font-medium uppercase tracking-wide">
+              Records personnels
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {records.map((r) => (
+              <div
+                key={r.label}
+                className="rounded-xl border border-border bg-card p-3"
+              >
+                <span className="text-lg font-black">{r.value}</span>
+                <span className="mt-1 block text-[10px] text-muted-foreground">
+                  {r.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>*/}
+
+        {/* Badges */}
+        <section>
+          <div className="mb-3 flex items-center gap-2">
+            <Award className="h-4 w-4 text-accent" />
+            <h2 className="text-sm font-medium uppercase tracking-wide">
+              Trophés obtenus
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            {badges.map((b) => (
+              <div
+                key={b.name}
+                className={cn(
+                  "flex flex-col items-center gap-1.5 rounded-xl border p-3",
+                  b.unlocked
+                    ? "border-accent/30 bg-card"
+                    : "border-border bg-secondary opacity-50"
+                )}
+              >
+                <span className="text-2xl">{b.icon}</span>
+                <span className="text-center text-[10px] font-semibold">
+                  {b.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Récompenses */}
+        <section>
+          <div className="mb-3 flex items-center gap-2">
+            <Gift className="h-4 w-4 text-accent" />
+            <h2 className="text-sm font-medium uppercase tracking-wide">
+              Récompenses
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {rewards.map((r) => (
+              <div
+                key={r.name}
+                className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
+              >
+                <span className="text-sm font-semibold">{r.name}</span>
+                {r.claimed ? (
+                  <span className="rounded-full bg-accent/20 px-2.5 py-0.5 text-[10px] font-bold">
+                    Obtenu
+                  </span>
+                ) : (
+                  <button className="rounded-full bg-accent px-3 py-1 text-[10px] font-bold text-accent-foreground">
+                    Réclamer
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </MobileLayout>
+  )
+}
+
+function TeamTab({ onBack }: { onBack: () => void }) {
+  useEffect(() => {
+    // Quand le composant est monté, on scroll en haut
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  return (
+    <div className="flex flex-col gap-6 p-4 animate-fade-in">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-2">
+          <button onClick={onBack} className="flex items-center gap-2">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-display text-xl">TEAM</span>
+          </button>
+        </div>
+
+      {/* Team header */}
+      <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4">
+        <div className="mb-2 flex items-center gap-2">
+          <Users className="h-5 w-5 text-accent-foreground" />
+          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
+            Contribution ce mois-ci
+          </h2>
+        </div>
+        <p className="mb-4 text-xs text-muted-foreground">Equipe : IngeMedia</p>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
+            <Zap className="h-4 w-4 text-accent" />
+            <span className="text-lg font-black text-foreground">{monthContribution.points}</span>
+            <span className="text-[9px] font-medium uppercase text-muted-foreground">Points</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
+            <Map className="h-4 w-4 text-accent" />
+            <span className="text-lg font-black text-foreground">{monthContribution.tiles}</span>
+            <span className="text-[9px] font-medium uppercase text-muted-foreground">kilomètres</span>
+          </div>
+          <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
+            <BarChart3 className="h-4 w-4 text-accent" />
+            <span className="text-lg font-black text-foreground">{monthContribution.internalRank}</span>
+            <span className="text-[9px] font-medium uppercase text-muted-foreground">Rang interne</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Team stats summary */}
+      <section aria-label="Statistiques equipe">
+        <div className="mb-3 flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-accent" />
+          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Statistiques équipe</h2>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
+            <span className="text-2xl font-black text-foreground">7:42</span>
+            <span className="text-[10px] font-medium text-muted-foreground">km/h vitesse moy.</span>
+          </div>
+          <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
+            <span className="text-2xl font-black text-foreground">140</span>
+            <span className="text-[10px] font-medium text-muted-foreground">km total équipe</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Performance history */}
+      <section aria-label="Historique des performances en team">
+        <div className="mb-3 flex items-center gap-2">
+          <History className="h-4 w-4 text-accent" />
+          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Historique performances</h2>
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-border">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-border bg-secondary">
+                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Mois</th>
+                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Points</th>
+                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">KM</th>
+                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Rang</th>
+              </tr>
+            </thead>
+            <tbody>
+              {teamPerformance.map((perf, i) => (
+                <tr key={i} className="border-b border-border last:border-0">
+                  <td className="px-4 py-3 font-semibold text-foreground">{perf.month}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{perf.points}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{perf.tiles}</td>
+                  <td className="px-4 py-3 font-bold text-foreground">{perf.rank}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Team ranking */}
+      <section aria-label="Classement equipe">
+        <div className="mb-3 flex items-center gap-2">
+          <BarChart3 className="h-4 w-4 text-accent" />
+          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Classement Top #5</h2>
+        </div>
+        <div className="flex flex-col gap-2">
+          {[
+            { name: "TeRunner83", members: 12, level: 114, color: "bg-accent" },
+            { name: "CourSe2N8", members: 21, level: 110, color: "bg-accent/70" },
+            { name: "UrbanStrides", members: 9, level: 93, color: "bg-orange-300" },
+            { name: "RunnnnForLife", members: 8, level: 92, color: "bg-secondary" },
+            { name: "CaCourtBien", members: 17, level: 80, color: "bg-secondary" },
+          ].map((team, i) => (
+            <div key={i} className="flex items-center overflow-hidden rounded-xl border border-border bg-card">
+              <div className={`flex flex-1 flex-col justify-center p-3 ${team.color} ${i < 3 ? "text-accent-foreground" : "text-foreground"}`}>
+                <span className="text-xs font-black uppercase">{team.name}</span>
+                <span className="flex items-center gap-1 text-[10px] opacity-80">
+                  <Users className="h-3 w-3" />
+                  {team.members}
+                </span>
+              </div>
+              <div className="px-4 py-3 text-right">
+                <span className="text-xs font-bold text-muted-foreground">Niv. </span>
+                <span className="text-sm font-black text-foreground">{team.level}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

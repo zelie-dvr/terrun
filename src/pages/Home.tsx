@@ -3,10 +3,36 @@ import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useState, useEffect, ReactNode } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Home() {
   const { user } = useAuth();
   const [period, setPeriod] = useState("Ce mois");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Notification persistante "Activité sauvegardée"
+  useEffect(() => {
+    if (location.state?.showToast) {
+      const xp = location.state.xp || 200;
+
+      toast.custom((t) => (
+        <div className="bg-zinc-950/90 backdrop-blur-md text-white px-5 py-3 rounded-full border border-[#D7FF00]/30 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-3 animate-in slide-in-from-bottom-5 fade-in duration-300 w-auto min-w-[280px] mx-auto">
+          <div className="w-2 h-2 rounded-full bg-[#D7FF00] animate-pulse shadow-[0_0_10px_#D7FF00]" />
+          <span className="font-medium text-sm tracking-wide">Activité sauvegardée <span className="font-bold text-[#D7FF00] ml-1">+{xp} XP</span></span>
+        </div>
+      ), {
+        duration: 4000,
+        position: 'bottom-center',
+        className: "!bg-transparent !border-0 !shadow-none !p-0"
+      });
+
+      // Nettoyage du state pour éviter le re-déclenchement
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
+
   // Hardcoded profile data for presentation
   const profile = {
     first_name: "Pierre",
@@ -37,7 +63,7 @@ export default function Home() {
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full border-2 border-primary overflow-hidden shadow-md">
-              <img src="dist/images/individual-avatar.png" alt="Profile" className="w-full h-full object-cover" />
+              <img src="dist/images/profile-picture.png" alt="Profile" className="w-full h-full object-cover" />
             </div>
             <span className="font-medium text-lg">
               Salut, <span className="font-bold text-primary dark:text-terrun-lime-500">{firstName}</span> 👋
@@ -124,76 +150,76 @@ export default function Home() {
 
         {/* Carte interactive */}
         <section aria-label="Carte interactive">
-      <h2 className="mb-1 text-lg font-black uppercase tracking-wide text-foreground">
-        Carte Interactive
-      </h2>
-      <p className="mb-3 text-xs text-muted-foreground">
-        Prenez connaissance des avancées des zones conquises, perdues ou contestées.
-      </p>
+          <h2 className="mb-1 text-lg font-black uppercase tracking-wide text-foreground">
+            Carte Interactive
+          </h2>
+          <p className="mb-3 text-xs text-muted-foreground">
+            Prenez connaissance des avancées des zones conquises, perdues ou contestées.
+          </p>
 
-      <div className="relative overflow-hidden rounded-2xl border border-border">
-        {/* Map container */}
-        <div className="relative h-56 bg-secondary">
-          {/* Grid overlay */}
-          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 240" fill="none" aria-hidden="true">
-            {/* Lignes verticales */}
-            {Array.from({ length: 20 }).map((_, i) => (
-              <line key={`v-${i}`} x1={i * 20} y1="0" x2={i * 20} y2="240" stroke="hsl(var(--border))" strokeWidth="0.5" />
-            ))}
-            {/* Lignes horizontales */}
-            {Array.from({ length: 12 }).map((_, i) => (
-              <line key={`h-${i}`} x1="0" y1={i * 20} x2="400" y2={i * 20} stroke="hsl(var(--border))" strokeWidth="0.5" />
-            ))}
+          <div className="relative overflow-hidden rounded-2xl border border-border">
+            {/* Map container */}
+            <div className="relative h-56 bg-secondary">
+              {/* Grid overlay */}
+              <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 240" fill="none" aria-hidden="true">
+                {/* Lignes verticales */}
+                {Array.from({ length: 20 }).map((_, i) => (
+                  <line key={`v-${i}`} x1={i * 20} y1="0" x2={i * 20} y2="240" stroke="hsl(var(--border))" strokeWidth="0.5" />
+                ))}
+                {/* Lignes horizontales */}
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <line key={`h-${i}`} x1="0" y1={i * 20} x2="400" y2={i * 20} stroke="hsl(var(--border))" strokeWidth="0.5" />
+                ))}
 
-            {/* Zones conquises */}
-            <rect x="200" y="40" width="80" height="80" fill="hsl(var(--terrun-lime))" opacity="0.35" rx="4" />
-            <rect x="280" y="80" width="60" height="60" fill="hsl(var(--terrun-lime))" opacity="0.25" rx="4" />
-            <rect x="220" y="120" width="40" height="60" fill="hsl(var(--terrun-lime))" opacity="0.3" rx="4" />
+                {/* Zones conquises */}
+                <rect x="200" y="40" width="80" height="80" fill="hsl(var(--terrun-lime))" opacity="0.35" rx="4" />
+                <rect x="280" y="80" width="60" height="60" fill="hsl(var(--terrun-lime))" opacity="0.25" rx="4" />
+                <rect x="220" y="120" width="40" height="60" fill="hsl(var(--terrun-lime))" opacity="0.3" rx="4" />
 
-            {/* Zones contestées */}
-            <rect x="100" y="60" width="60" height="80" fill="#fb923c" opacity="0.25" rx="4" />
-            <rect x="60" y="100" width="40" height="60" fill="#a9d5d2" opacity="0.2" rx="4" />
-            <rect x="140" y="140" width="60" height="40" fill="#a9d5d2" opacity="0.25" rx="4" />
+                {/* Zones contestées */}
+                <rect x="100" y="60" width="60" height="80" fill="#fb923c" opacity="0.25" rx="4" />
+                <rect x="60" y="100" width="40" height="60" fill="#a9d5d2" opacity="0.2" rx="4" />
+                <rect x="140" y="140" width="60" height="40" fill="#a9d5d2" opacity="0.25" rx="4" />
 
-            {/* Rues */}
-            <line x1="0" y1="100" x2="400" y2="100" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
-            <line x1="180" y1="0" x2="180" y2="240" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
-          </svg>
+                {/* Rues */}
+                <line x1="0" y1="100" x2="400" y2="100" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
+                <line x1="180" y1="0" x2="180" y2="240" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
+              </svg>
 
-          {/* Marker central */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div className="relative">
-              <div className="h-4 w-4 rounded-full bg-accent shadow-lg ring-4 ring-accent/20" />
-              <div className="absolute -inset-2 animate-ping rounded-full bg-accent/30" />
+              {/* Marker central */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="relative">
+                  <div className="h-4 w-4 rounded-full bg-accent shadow-lg ring-4 ring-accent/20" />
+                  <div className="absolute -inset-2 animate-ping rounded-full bg-accent/30" />
+                </div>
+              </div>
+
+              {/* Bouton carte */}
+              <button
+                className="absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg"
+                aria-label="Ouvrir la carte"
+              >
+                <MapPin className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Légende */}
+            <div className="flex items-center gap-4 border-t border-border bg-card px-4 py-2.5">
+              <div className="flex items-center gap-1.5">
+                <div className="h-3 w-3 rounded-sm bg-accent/40" />
+                <span className="text-[10px] font-medium text-muted-foreground">Zones conquises</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="h-3 w-3 rounded-sm bg-[#a9d5d2]" />
+                <span className="text-[10px] font-medium text-muted-foreground">Zones perdues</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="h-3 w-3 rounded-sm bg-orange-300/50" />
+                <span className="text-[10px] font-medium text-muted-foreground">Zones adverses</span>
+              </div>
             </div>
           </div>
-
-          {/* Bouton carte */}
-          <button
-            className="absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg"
-            aria-label="Ouvrir la carte"
-          >
-            <MapPin className="h-5 w-5" />
-          </button>
-        </div>
-
-        {/* Légende */}
-        <div className="flex items-center gap-4 border-t border-border bg-card px-4 py-2.5">
-          <div className="flex items-center gap-1.5">
-            <div className="h-3 w-3 rounded-sm bg-accent/40" />
-            <span className="text-[10px] font-medium text-muted-foreground">Zones conquises</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="h-3 w-3 rounded-sm bg-[#a9d5d2]" />
-            <span className="text-[10px] font-medium text-muted-foreground">Zones perdues</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="h-3 w-3 rounded-sm bg-orange-300/50" />
-            <span className="text-[10px] font-medium text-muted-foreground">Zones adverses</span>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
         {/* Événements locaux */}
         <section>

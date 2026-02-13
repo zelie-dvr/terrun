@@ -29,10 +29,10 @@ const seasonHistory = [
 ]
 
 // const records = [
-// { label: "Plus de km en un mois^", value: "42 km" },
-// { label: "Plus de tuiles en un jour", value: "14" },
+ // { label: "Plus de km en un mois^", value: "42 km" },
+  // { label: "Plus de tuiles en un jour", value: "14" },
 //  { label: "Plus longue serie de jours", value: "12 jours" },
-// { label: "Meilleure allure", value: "4:32/km" },
+ // { label: "Meilleure allure", value: "4:32/km" },
 // ]
 
 const badges = [
@@ -112,11 +112,11 @@ export default function Profile() {
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-4xl">
-                <img
-                  src="dist/images/profile-picture.png"
-                  alt="Profile"
-                  className="w-26 h-26 object-cover rounded-full"
-                />
+              <img 
+                src="dist/images/individual-avatar.png" 
+                alt="Profile" 
+                className="w-26 h-26 object-cover rounded-full" 
+              />
               </div>
             </div>
             <span className="absolute top-0 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
@@ -257,9 +257,9 @@ function SoloStats({ onBack }: { onBack: () => void }) {
 
   const [showAllSeasons, setShowAllSeasons] = useState(false);
   const displayedSeasons = showAllSeasons ? seasonHistory : seasonHistory.slice(0, 2);
-
+  
   return (
-
+    
     <MobileLayout>
       <div className="p-4 animate-fade-in flex flex-col gap-4">
 
@@ -308,15 +308,15 @@ function SoloStats({ onBack }: { onBack: () => void }) {
           </div>
 
           {seasonHistory.length > 2 && (
-            <div className="flex justify-end mt-2">
-              <button
-                onClick={() => setShowAllSeasons(!showAllSeasons)}
-                className="text-xs text-accent font-medium hover:underline"
-              >
-                {showAllSeasons ? "Voir moins" : "Voir plus"}
-              </button>
-            </div>
-          )}
+          <div className="flex justify-end mt-2">
+            <button
+              onClick={() => setShowAllSeasons(!showAllSeasons)}
+              className="text-xs text-accent font-medium hover:underline"
+            >
+              {showAllSeasons ? "Voir moins" : "Voir plus"}
+            </button>
+          </div>
+        )}
         </section>
 
         {/* Records
@@ -412,14 +412,15 @@ function TeamTab({ onBack }: { onBack: () => void }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
+    <MobileLayout>
     <div className="flex flex-col gap-6 p-4 animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-2 mb-2">
-        <button onClick={onBack} className="flex items-center gap-2">
-          <ArrowLeft className="w-5 h-5" />
-          <span className="font-display text-xl">TEAM</span>
-        </button>
-      </div>
+          <button onClick={onBack} className="flex items-center gap-2">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-display text-xl">TEAM</span>
+          </button>
+        </div>
 
       {/* Team header */}
       <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4">
@@ -498,66 +499,68 @@ function TeamTab({ onBack }: { onBack: () => void }) {
       </section>
 
       {/* Team internal ranking */}
-      <section aria-label="Classement interne equipe">
-        <div className="mb-3 flex items-center gap-2">
-          <Trophy className="h-4 w-4 text-accent" />
-          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
-            Classement Interne
-          </h2>
-        </div>
+<section aria-label="Classement interne equipe">
+  <div className="mb-3 flex items-center gap-2">
+    <Trophy className="h-4 w-4 text-accent" />
+    <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
+      Classement Interne
+    </h2>
+  </div>
 
-        <div className="flex flex-col gap-2">
-          {[
-            { name: "Lisa", xp: 12450 },
-            { name: "Pierre-Olivier", xp: 11890 },
-            { name: "Victoire", xp: 10230 },
-            { name: "Corentin", xp: 9840 },
-            { name: "Mathis", xp: 8730 },
-          ].map((member, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
-            >
-              {/* Left content */}
-              <div className="flex items-center gap-3">
-
-                {/* Ranking Icon */}
-                <div
-                  className={`
+  <div className="flex flex-col gap-2">
+    {[
+      { name: "Lisa", xp: 12450 },
+      { name: "Pierre-Olivier", xp: 11890 },
+      { name: "Victoire", xp: 10230 },
+      { name: "Corentin", xp: 9840 },
+      { name: "Mathis", xp: 8730 },
+    ].map((member, i) => (
+      <div
+        key={i}
+        className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
+      >
+        {/* Left content */}
+        <div className="flex items-center gap-3">
+          
+          {/* Ranking Icon */}
+          <div
+            className={`
               flex h-8 w-8 items-center justify-center rounded-full font-bold text-xs
-              ${i === 0
-                      ? "bg-yellow-400 text-black"
-                      : i === 1
-                        ? "bg-gray-300 text-black"
-                        : i === 2
-                          ? "bg-orange-400 text-black"
-                          : "bg-muted text-foreground"
-                    }
+              ${
+                i === 0
+                  ? "bg-yellow-400 text-black"
+                  : i === 1
+                  ? "bg-gray-300 text-black"
+                  : i === 2
+                  ? "bg-orange-400 text-black"
+                  : "bg-muted text-foreground"
+              }
             `}
-                >
-                  {i + 1}
-                </div>
+          >
+            {i + 1}
+          </div>
 
-                {/* Name */}
-                <div className="flex flex-col">
-                  <span className="text-xs font-black uppercase text-foreground">
-                    {member.name}
-                  </span>
-                </div>
-              </div>
-
-              {/* XP */}
-              <div className="text-right">
-                <span className="text-sm font-black text-foreground">
-                  {member.xp}
-                </span>
-                <span className="text-xs font-bold text-muted-foreground">  RUNITS</span>
-              </div>
-            </div>
-          ))}
+          {/* Name */}
+          <div className="flex flex-col">
+            <span className="text-xs font-black uppercase text-foreground">
+              {member.name}
+            </span>
+          </div>
         </div>
-      </section>
+
+        {/* XP */}
+        <div className="text-right">
+          <span className="text-sm font-black text-foreground">
+            {member.xp}
+          </span>
+          <span className="text-xs font-bold text-muted-foreground">  RUNITS</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
 
     </div>
+    </MobileLayout>
   );
 }

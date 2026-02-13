@@ -53,7 +53,7 @@ export default function RunSummary() {
       toast.error("Erreur lors de la sauvegarde");
       console.error(error);
     } else {
-      navigate(`/?saved=true&xp=${xpEarned}`);
+      navigate("/", { state: { showToast: true, xp: xpEarned } });
     }
     setSaving(false);
   };

@@ -3,6 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowLeft, Target, ChevronDown, CheckSquare, ListTodo, MapPin, Signal, Play, Pause, Square, Scan } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import WebMap from "@/components/map/WebMap";
+import { Coordinate, getTilesInPolygon } from "@/lib/gridSystem";
 
 type RunState = "mode-select" | "ready" | "running" | "paused";
 
@@ -30,9 +33,23 @@ export default function Run() {
   const [activeQuestTab, setActiveQuestTab] = useState<"quests" | "challenges">("quests");
   const [isScanning, setIsScanning] = useState(false);
 
+  // Map State (Lifted from WebMap)
+  const [route, setRoute] = useState<Coordinate[]>([]);
+  const [conqueredTiles, setConqueredTiles] = useState<Set<string>>(new Set());
+
   const [stats, setStats] = useState({ pace: "0'00\"", time: "00:00", distance: 0 });
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Reset run data when starting fresh
+  useEffect(() => {
+    if (runState === "ready") {
+      setRoute([]);
+      setConqueredTiles(new Set());
+      setElapsedSeconds(0);
+      setStats({ pace: "0'00\"", time: "00:00", distance: 0 });
+    }
+  }, [runState]);
 
   const waveIndividual =
     "M0,210L120,220C240,230,480,250,720,250C960,250,1200,230,1320,220L1440,210L1440,320L0,320Z";
@@ -196,30 +213,14 @@ export default function Run() {
   return (
     <MobileLayout hideNav>
       <div className="min-h-screen relative">
-        {/* Map placeholder */}
-        <div className="absolute inset-0 bg-gradient-to-br from-muted via-background to-muted">
-          <div className="absolute inset-0 opacity-30">
-            {/* Grid pattern to simulate map */}
-            <div className="grid grid-cols-8 grid-rows-12 h-full">
-              {Array.from({ length: 96 }).map((_, i) => (
-                <div key={i} className="border border-muted-foreground/10" />
-              ))}
-            </div>
-          </div>
-
-          {/* Territory zones */}
-          <div className="absolute top-20 left-4 w-24 h-32 bg-terrun-purple/40 rounded-lg" />
-          <div className="absolute top-40 right-8 w-32 h-24 bg-terrun-teal/40 rounded-lg" />
-
-          {/* User position */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div className="relative">
-              <div className="w-8 h-8 bg-primary rounded-full shadow-lg flex items-center justify-center">
-                <div className="w-3 h-3 bg-foreground rounded-full" />
-              </div>
-              <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-primary" />
-            </div>
-          </div>
+        <div className="absolute inset-0 z-0">
+          <WebMap
+            isRecording={runState === "running"}
+            route={route}
+            setRoute={setRoute}
+            conqueredTiles={conqueredTiles}
+            setConqueredTiles={setConqueredTiles}
+          />
         </div>
 
         {/* Radar Animation Overlay */}
@@ -324,7 +325,32 @@ export default function Run() {
                   <Play className="w-6 h-6 text-black fill-current ml-1" />
                 </button>
                 <button
-                  onClick={() => navigate("/run/summary", { state: { distance: stats.distance, time: stats.time, pace: stats.pace, durationSeconds: elapsedSeconds } })}
+                  onClick={() => {
+                    // 1. Calculate loop conquest on stop
+                    console.log("Stopping run... calculating loop.");
+                    const tilesInside = getTilesInPolygon(route);
+                    const finalConqueredTiles = new Set(conqueredTiles);
+
+                    if (tilesInside.length > 0) {
+                      console.log(`Loop detected! Adding ${tilesInside.length} tiles.`);
+                      toast.success(`Boucle détectée ! ${tilesInside.length} zones capturées.`);
+                      tilesInside.forEach(t => finalConqueredTiles.add(t));
+                    } else {
+                      toast.info("Course terminée. Aucune boucle détectée.");
+                    }
+
+                    // 2. Navigate with final data
+                    navigate("/run/summary", {
+                      state: {
+                        distance: stats.distance,
+                        time: stats.time,
+                        pace: stats.pace,
+                        durationSeconds: elapsedSeconds,
+                        route: route,
+                        conqueredTiles: Array.from(finalConqueredTiles)
+                      }
+                    });
+                  }}
                   className="w-14 h-14 rounded-full bg-black/70 backdrop-blur-md flex items-center justify-center shadow-lg border border-[#D7FF00]/30 pointer-events-auto transition-all hover:bg-black/80 active:scale-95 group"
                 >
                   <Square className="w-5 h-5 text-[#D7FF00] fill-current opacity-90 group-hover:opacity-100" />

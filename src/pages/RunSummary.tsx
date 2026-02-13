@@ -5,6 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Pencil } from "lucide-react";
 import { toast } from "sonner";
+import StaticWebMap from "@/components/map/StaticWebMap";
+import { Coordinate } from "@/lib/gridSystem";
 
 export default function RunSummary() {
   const navigate = useNavigate();
@@ -15,6 +17,8 @@ export default function RunSummary() {
     time: string;
     pace: string;
     durationSeconds: number;
+    route?: Coordinate[];
+    conqueredTiles?: string[];
   } | null;
 
   const [title, setTitle] = useState("Course sans titre");
@@ -62,9 +66,18 @@ export default function RunSummary() {
     <MobileLayout hideNav>
       <div className="min-h-screen bg-background p-4 animate-fade-in">
         {/* Map preview */}
-        <div className="rounded-2xl overflow-hidden h-48 bg-muted mb-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-transparent to-primary/20" />
-          <div className="absolute bottom-3 left-3 text-sm font-medium text-foreground">Zone parcourue</div>
+        {/* Map preview */}
+        <div className="rounded-2xl overflow-hidden h-64 bg-muted mb-6 relative border border-border">
+          {runData?.route && runData.route.length > 0 ? (
+            <StaticWebMap
+              route={runData.route}
+              conqueredTiles={new Set(runData.conqueredTiles || [])}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+              Pas de données de carte
+            </div>
+          )}
         </div>
 
         {/* Key stats */}

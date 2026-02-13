@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
 @layer base {
   :root {
     --background: 60 20% 98%;
@@ -81,7 +87,10 @@
     font-family: 'Inter', sans-serif;
   }
 
-  h1, h2, h3, .font-display {
+  h1,
+  h2,
+  h3,
+  .font-display {
     font-family: 'Bebas Neue', sans-serif;
     letter-spacing: 0.02em;
   }

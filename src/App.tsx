@@ -40,13 +40,28 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            <AppRoutes />
-          </AuthProvider>
-        </BrowserRouter>
+        <div className="max-w-md mx-auto relative min-h-screen shadow-2xl bg-black">
+          <Toaster />
+          <Sonner
+            position="bottom-center"
+            className="!fixed !bottom-24 !left-1/2 !-translate-x-1/2 !z-[999] !w-[90%] !max-w-[350px] pointer-events-none"
+            toastOptions={{
+              className: "pointer-events-auto",
+              style: {
+                marginBottom: '0',
+                width: '100%',
+              },
+              classNames: {
+                toast: "bg-black/90 border-white/10 text-white shadow-2xl backdrop-blur-md rounded-xl justify-center",
+              }
+            }}
+          />
+          <BrowserRouter>
+            <AuthProvider>
+              <AppRoutes />
+            </AuthProvider>
+          </BrowserRouter>
+        </div>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>

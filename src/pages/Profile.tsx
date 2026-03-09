@@ -1,39 +1,36 @@
 import { MobileLayout } from "@/components/layout/MobileLayout";
-import { Bell, Settings, Trophy, ChevronRight, ArrowLeft, Share2, Award, Gift, History, TrendingUp, Activity, MapPin, Compass, Zap, Users, BarChart3 } from "lucide-react";
+import { Bell, Settings, Trophy, ChevronRight, ArrowLeft, Award, Gift, History, TrendingUp, Activity, MapPin, Compass, Zap, Users, BarChart3, Route, Map, Calendar, } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Route, Map, Calendar } from "lucide-react";
 
-type View = "main" | "solo" | "team";
+type ActivityType = {
+  title: string;
+  distance: string;
+  duration: string;
+  location: string;
+  pace: string; 
+  date: string;
+  xp: number;
+  status: string;
+  comments: number;
+  image: string | null;
+};
 
-const topTeams = [
-  { name: "TERRUNNER83", members: 12, level: 114, color: "from-primary to-terrun-lime-light" },
-  { name: "COUREURS2N8", members: 21, level: 110, color: "from-gray-300 to-gray-400" },
-  { name: "URBANSTRIDES", members: 9, level: 93, color: "from-orange-300 to-orange-400" },
-  { name: "RUNNNNNFORLIFE", members: 8, level: 92, color: "from-gray-400 to-gray-500" },
-  { name: "ÇACOURTBIEN", members: 17, level: 80, color: "from-primary/60 to-primary" },
-];
+type View = "main" | "solo" | "team" | "journal";
 
 const stats = [
   { icon: Route, label: "Total km parcourus", value: "132 km" },
   { icon: TrendingUp, label: "Meilleure allure", value: "4:32/km" },
   { icon: Map, label: "Territoires conquis", value: "87" },
   { icon: Trophy, label: "Meilleure position saison", value: "#8" },
-]
+];
 
 const seasonHistory = [
   { season: "Saison 4 (actuelle)", rank: "#24", xp: "8,450 RUNITS", active: true },
   { season: "Saison 3", rank: "#12", xp: "14,200 RUNITS", active: false },
   { season: "Saison 2", rank: "#31", xp: "9,800 RUNITS", active: false },
   { season: "Saison 1", rank: "#8", xp: "16,500 RUNITS", active: false },
-]
-
-// const records = [
- // { label: "Plus de km en un mois^", value: "42 km" },
-  // { label: "Plus de tuiles en un jour", value: "14" },
-//  { label: "Plus longue serie de jours", value: "12 jours" },
- // { label: "Meilleure allure", value: "4:32/km" },
-// ]
+];
 
 const badges = [
   { name: "Premier pas", icon: <Award />, unlocked: true },
@@ -42,63 +39,81 @@ const badges = [
   { name: "Éclaireur", icon: <Compass />, unlocked: true },
   { name: "Sprinteur", icon: <Zap />, unlocked: false },
   { name: "Territory Master", icon: <MapPin />, unlocked: false },
-]
+];
 
 const rewards = [
   { name: "Avatar Premium Saison 3", claimed: true },
   { name: "Badge Or - Top 15", claimed: true },
   { name: "Titre: Sprinter d'Elite", claimed: false },
-]
+];
 
 const monthContribution = {
-  points: "1,240",
-  tiles: "67",
+  points: "370",
+  tiles: "37",
   internalRank: "#3 / 12",
 };
 
 const teamPerformance = [
-  { month: "Novembre", points: "1,240", tiles: "67", rank: "#3" },
-  { month: "Octobre", points: "980", tiles: "83", rank: "#5" },
-  { month: "Septembre", points: "1,450", tiles: "86", rank: "#2" },
-  { month: "Aout", points: "760", tiles: "59", rank: "#75" },
+  { month: "Novembre", points: "370", tiles: "37", rank: "#3" },
+  { month: "Octobre", points: "560", tiles: "56", rank: "#5" },
+  { month: "Septembre", points: "326", tiles: "31", rank: "#2" },
+  { month: "Aout", points: "768", tiles: "65", rank: "#4" },
 ];
 
-
 export default function Profile() {
+  // 🔹 Tous les hooks doivent être déclarés en haut
   const [view, setView] = useState<View>("main");
+  const [showJournal, setShowJournal] = useState(false);
 
-  if (view === "solo") {
-    return <SoloStats onBack={() => setView("main")} />;
-  }
+  const activities: ActivityType[] = [
+    {
+      title: "Run au Mourillon",
+      distance: "5 km",
+      duration: "28 min",
+      location: "Toulon",
+      pace: "5:53",
+      date: "14 déc",
+      xp: 120,
+      status: "Zone conquise",
+      comments: 2,
+      image: null,
+    },
+    {
+      title: "Sortie solo",
+      distance: "8 km",
+      duration: "45 min",
+      location: "Toulon",
+      date: "10 déc",
+      pace: "6:02",
+      xp: 200,
+      status: "Zone contestée",
+      comments: 3,
+      image: null,
+    },
+  ];
 
-  if (view === "team") {
-    return <TeamTab onBack={() => setView("main")} />;
-  }
+  // 🔹 Affichage conditionnel des vues
+  if (view === "solo") return <SoloStats onBack={() => setView("main")} />;
+  if (view === "team") return <TeamTab onBack={() => setView("main")} />;
+  if (view === "journal") return <JournalTab onBack={() => setView("main")} activities={activities} />;
 
+  // 🔹 Contenu principal
   const profile = {
     first_name: "Victoire",
-    total_distance_km: 85, // Matches "Objectif du mois" progress
+    total_distance_km: 12,
     total_runs: 42,
-    total_time_seconds: 153000, // approx 42.5 hours
-    monthly_goal_km: 100
+    total_time_seconds: 153000,
+    monthly_goal_km: 50,
   };
 
   return (
     <MobileLayout>
       <div className="p-4 animate-fade-in">
-        {/* Avatar section */}
-        <div className="flex flex-col items-center mb-6">
+        {/* Avatar */}
+        <div className="flex flex-col items-center mb-4">
           <div className="relative mb-3">
-            {/* Progress ring */}
             <svg className="w-28 h-28 -rotate-90">
-              <circle
-                cx="56"
-                cy="56"
-                r="50"
-                fill="none"
-                stroke="hsl(var(--muted))"
-                strokeWidth="6"
-              />
+              <circle cx="56" cy="56" r="50" fill="none" stroke="hsl(var(--muted))" strokeWidth="6" />
               <circle
                 cx="56"
                 cy="56"
@@ -112,11 +127,11 @@ export default function Profile() {
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-4xl">
-              <img 
-                src="dist/images/individual-avatar.png" 
-                alt="Profile" 
-                className="w-26 h-26 object-cover rounded-full" 
-              />
+                <img
+                  src="dist/images/individual-avatar.png"
+                  alt="Profile"
+                  className="w-26 h-26 object-cover rounded-full"
+                />
               </div>
             </div>
             <span className="absolute top-0 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
@@ -127,7 +142,6 @@ export default function Profile() {
           <h1 className="font-display text-2xl">Victoire Dubust</h1>
           <p className="text-sm text-muted-foreground">Toulon, France</p>
 
-          {/* Action buttons */}
           <div className="flex gap-4 mt-2">
             <button className="p-2">
               <Bell className="w-5 h-5" />
@@ -138,7 +152,14 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Stats badges */}
+        {/* Titre de niveau */}
+        <div className="flex flex-col items-center mb-3">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#C6D300] to-[#9AA800] drop-shadow-lg">
+              Explorateur
+            </h2>
+          </div>
+
+        {/* Badges */}
         <div className="flex flex-wrap gap-2 justify-center mb-6">
           <div className="terrun-badge">
             <span>ABONNÉS</span>
@@ -150,35 +171,32 @@ export default function Profile() {
           </div>
         </div>
 
-
-        <div className="flex items-center gap-3">
+        {/* Objectif du mois */}
+        <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 rounded-full flex items-center justify-center">
             <img src="dist/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-medium mb-1">{Number(profile.total_distance_km).toFixed(0)}/{Number(profile.monthly_goal_km).toFixed(0)} KM</p>
+            <p className="text-sm font-medium mb-1">
+              {Number(profile.total_distance_km).toFixed(0)}/{Number(profile.monthly_goal_km).toFixed(0)} KM
+            </p>
             <div className="terrun-progress">
-              <div className="terrun-progress-bar" style={{ width: `${Math.min(100, (Number(profile.total_distance_km) / Number(profile.monthly_goal_km)) * 100)}%` }} />
+              <div
+                className="terrun-progress-bar"
+                style={{ width: `${Math.min(100, (profile.total_distance_km / profile.monthly_goal_km) * 100)}%` }}
+              />
             </div>
           </div>
         </div>
 
         {/* Stats permanentes */}
         <section aria-label="Statistiques permanentes" className="mt-6 mb-5">
-          <h2 className="font-display text-xl mb-4">
-            STATS PERMANENTES
-          </h2>
-
+          <h2 className="font-display text-xl mb-4">STATS PERMANENTES</h2>
           <div className="grid grid-cols-2 gap-3">
             {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-4"
-              >
+              <div key={stat.label} className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-4">
                 <stat.icon className="h-5 w-5 text-accent" />
-                <span className="text-xl font-black text-foreground">
-                  {stat.value}
-                </span>
+                <span className="text-xl font-black text-foreground">{stat.value}</span>
                 <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
                   {stat.label}
                 </span>
@@ -187,40 +205,37 @@ export default function Profile() {
           </div>
         </section>
 
+        {/* Bouton Journal */}
+        <button
+          onClick={() => setView("journal")}
+          className="w-full bg-[#c5d3003d] text-black font-bold py-3 rounded-xl mb-4 border border-[#C6D300]"
+        >
+          Journal de conquête
+        </button>
 
-        {/* Progress section */}
+        {/* Progression */}
         <div className="terrun-card">
           <h2 className="font-display text-xl mb-4">PROGRÈS</h2>
 
-          {/* Jauge XP Niveau actuel */}
+          {/* Jauge XP */}
           <div className="terrun-badge justify-between w-full mb-3 relative overflow-hidden">
-            {/* Jauge verte en arrière-plan à 70% par exemple */}
             <div className="absolute inset-0 w-[70%] bg-gradient-to-r from-[#fcfcfc] to-[#C6D300] rounded-full"></div>
-
-            {/* Contenu par-dessus la jauge */}
             <div className="relative z-10 flex items-center gap-2">
               <span>NIVEAU 6</span>
             </div>
             <span className="relative z-10 font-display text-lg">700/1000 XP</span>
           </div>
 
+          {/* Boutons INDIVIDUEL / TEAM */}
           <button
             onClick={() => setView("solo")}
             className="w-full flex items-center justify-between p-3 mb-2 hover:bg-muted rounded-xl transition-colors"
           >
             <div className="flex items-center gap-2">
-              <span>
-                <img
-                  src="dist/images/icon-solo.svg"
-                  alt="Carte interactive"
-                  className="block ml-1 w-4 object-cover"
-                />
-              </span>
+              <img src="dist/images/icon-solo.svg" alt="Carte interactive" className="block ml-1 w-4 object-cover" />
               <span className="font-display text-lg">INDIVIDUEL</span>
             </div>
-            <div className="flex items-center gap-3">
-              <ChevronRight className="w-5 h-5" />
-            </div>
+            <ChevronRight className="w-5 h-5" />
           </button>
 
           <button
@@ -228,22 +243,115 @@ export default function Profile() {
             className="w-full flex items-center justify-between p-3 hover:bg-muted rounded-xl transition-colors"
           >
             <div className="flex items-center gap-2">
-              <span>
-                <img
-                  src="dist/images/icon-team.svg"
-                  alt="Carte interactive"
-                  className="block w-5 object-cover"
-                />
-              </span>
+              <img src="dist/images/icon-team.svg" alt="Carte interactive" className="block w-5 object-cover" />
               <span className="font-display text-lg">ÉQUIPE</span>
             </div>
-            <div className="flex items-center gap-3">
-              <ChevronRight className="w-5 h-5" />
-            </div>
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+    </MobileLayout>
+  );
+}
+
+// ---------------------- JournalTab ----------------------
+function JournalTab({ onBack, activities }: { onBack: () => void; activities: ActivityType[] }) {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  return (
+    <MobileLayout>
+      <div className="p-4 flex flex-col gap-4 animate-fade-in">
+        <div className="flex items-center gap-2 mb-2">
+          <button onClick={onBack} className="flex items-center gap-2">
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-display text-xl">Journal de conquête</span>
           </button>
         </div>
 
+        <section className="flex flex-col gap-4">
+          {activities.map((act, i) => (
+            <div key={i} className="rounded-2xl border border-border bg-card p-4">
 
+              {/* En-tête : titre + lieu + XP */}
+              <div className="flex items-start justify-between mb-1">
+                <div>
+                  <p className="font-bold">{act.title}</p>
+                  {act.location && (
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.686 2 6 4.686 6 8c0 4.418 6 12 6 12s6-7.582 6-12c0-3.314-2.686-6-6-6z" />
+                        <circle cx="12" cy="8" r="2" fill="currentColor" />
+                      </svg>
+                      {act.location}
+                    </p>
+                  )}
+                </div>
+                <span className="text-xs font-bold text-[#C6D300]">+{act.xp} RUNITS</span>
+              </div>
+
+              {/* Stats en grand : Distance, Allure, Temps */}
+              <div className="flex justify-between items-end mt-3 mb-3 px-1">
+                <div className="flex flex-col">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Distance</span>
+                  <span className="text-2xl font-black leading-tight">{act.distance}</span>
+                </div>
+                <div className="flex flex-col items-center">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Allure</span>
+                  <span className="text-2xl font-black leading-tight">{act.pace ?? "–"} <span className="text-sm font-semibold text-muted-foreground">/km</span></span>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Temps</span>
+                  <span className="text-2xl font-black leading-tight">{act.duration}</span>
+                </div>
+              </div>
+
+              {/* Carte / image */}
+              {act.image ? (
+                <img
+                  src={act.image}
+                  alt={act.title}
+                  className="w-full h-40 object-cover rounded-xl mb-2"
+                />
+              ) : (
+                /* Carte interactive SVG de secours */
+                <div className="relative overflow-hidden rounded-xl mb-2 border border-border">
+                  <div className="relative h-40 bg-secondary">
+                    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 400 160" fill="none" aria-hidden="true">
+                      {Array.from({ length: 20 }).map((_, i) => (
+                        <line key={`v-${i}`} x1={i * 20} y1="0" x2={i * 20} y2="160" stroke="hsl(var(--border))" strokeWidth="0.5" />
+                      ))}
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <line key={`h-${i}`} x1="0" y1={i * 20} x2="400" y2={i * 20} stroke="hsl(var(--border))" strokeWidth="0.5" />
+                      ))}
+                      <rect x="200" y="20" width="80" height="80" fill="hsl(var(--terrun-lime))" opacity="0.35" rx="4" />
+                      <rect x="280" y="50" width="60" height="60" fill="hsl(var(--terrun-lime))" opacity="0.25" rx="4" />
+                      <rect x="220" y="100" width="40" height="40" fill="hsl(var(--terrun-lime))" opacity="0.3" rx="4" />
+                      <rect x="100" y="40" width="60" height="80" fill="#fb923c" opacity="0.25" rx="4" />
+                      <rect x="60" y="70" width="40" height="60" fill="#a9d5d2" opacity="0.2" rx="4" />
+                      <rect x="140" y="110" width="60" height="30" fill="#a9d5d2" opacity="0.25" rx="4" />
+                      <line x1="0" y1="80" x2="400" y2="80" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
+                      <line x1="180" y1="0" x2="180" y2="160" stroke="hsl(var(--foreground))" strokeWidth="1" opacity="0.08" />
+                    </svg>
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                      <div className="relative">
+                        <div className="h-4 w-4 rounded-full bg-accent shadow-lg ring-4 ring-accent/20" />
+                        <div className="absolute -inset-2 animate-ping rounded-full bg-accent/30" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Footer */}
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>{act.status}</span>
+                <span>{act.comments} commentaires</span>
+              </div>
+            </div>
+          ))}
+        </section>
       </div>
     </MobileLayout>
   );
@@ -294,7 +402,7 @@ function SoloStats({ onBack }: { onBack: () => void }) {
                 <div>
                   <span className="text-sm font-semibold">{s.season}</span>
                   {s.active && (
-                    <span className="ml-2 text-[10px] font-bold text-accent">
+                    <span className="ml-2 text-[10px] font-bold text-[#9AA800]">
                       EN COURS
                     </span>
                   )}
@@ -311,7 +419,7 @@ function SoloStats({ onBack }: { onBack: () => void }) {
           <div className="flex justify-end mt-2">
             <button
               onClick={() => setShowAllSeasons(!showAllSeasons)}
-              className="text-xs text-accent font-medium hover:underline"
+              className="text-xs text-gray-500 font-medium hover:text-[#000]"
             >
               {showAllSeasons ? "Voir moins" : "Voir plus"}
             </button>
@@ -359,8 +467,8 @@ function SoloStats({ onBack }: { onBack: () => void }) {
                 className={cn(
                   "flex flex-col items-center gap-1.5 rounded-xl border p-3",
                   b.unlocked
-                    ? "border-accent/30 bg-card"
-                    : "border-border bg-secondary opacity-50"
+                    ? "border-accent/70 bg-card"
+                    : "border-border bg-secondary opacity-30"
                 )}
               >
                 <span className="text-2xl">{b.icon}</span>
@@ -458,11 +566,11 @@ function TeamTab({ onBack }: { onBack: () => void }) {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
-            <span className="text-2xl font-black text-foreground">2.165</span>
+            <span className="text-2xl font-black text-foreground">1 690</span>
             <span className="text-[10px] font-medium text-muted-foreground">RUNITS total équipe</span>
           </div>
           <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
-            <span className="text-2xl font-black text-foreground">140</span>
+            <span className="text-2xl font-black text-foreground">169</span>
             <span className="text-[10px] font-medium text-muted-foreground">KM total équipe</span>
           </div>
         </div>
@@ -497,69 +605,6 @@ function TeamTab({ onBack }: { onBack: () => void }) {
           </table>
         </div>
       </section>
-
-      {/* Team internal ranking */}
-<section aria-label="Classement interne equipe">
-  <div className="mb-3 flex items-center gap-2">
-    <Trophy className="h-4 w-4 text-accent" />
-    <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
-      Classement Interne
-    </h2>
-  </div>
-
-  <div className="flex flex-col gap-2">
-    {[
-      { name: "Lisa", xp: 12450 },
-      { name: "Pierre-Olivier", xp: 11890 },
-      { name: "Victoire", xp: 10230 },
-      { name: "Corentin", xp: 9840 },
-      { name: "Mathis", xp: 8730 },
-    ].map((member, i) => (
-      <div
-        key={i}
-        className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
-      >
-        {/* Left content */}
-        <div className="flex items-center gap-3">
-          
-          {/* Ranking Icon */}
-          <div
-            className={`
-              flex h-8 w-8 items-center justify-center rounded-full font-bold text-xs
-              ${
-                i === 0
-                  ? "bg-yellow-400 text-black"
-                  : i === 1
-                  ? "bg-gray-300 text-black"
-                  : i === 2
-                  ? "bg-orange-400 text-black"
-                  : "bg-muted text-foreground"
-              }
-            `}
-          >
-            {i + 1}
-          </div>
-
-          {/* Name */}
-          <div className="flex flex-col">
-            <span className="text-xs font-black uppercase text-foreground">
-              {member.name}
-            </span>
-          </div>
-        </div>
-
-        {/* XP */}
-        <div className="text-right">
-          <span className="text-sm font-black text-foreground">
-            {member.xp}
-          </span>
-          <span className="text-xs font-bold text-muted-foreground">  RUNITS</span>
-        </div>
-      </div>
-    ))}
-  </div>
-</section>
-
     </div>
     </MobileLayout>
   );

@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [period, setPeriod] = useState("Ce mois");
   const location = useLocation();
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ export default function Home() {
 
       toast.custom((t) => (
         <div className="bg-zinc-950/90 backdrop-blur-md text-white px-5 py-3 rounded-full border border-[#D7FF00]/30 shadow-[0_4px_20px_rgba(0,0,0,0.4)] flex items-center justify-center gap-3 animate-in slide-in-from-bottom-5 fade-in duration-300 w-auto min-w-[280px] mx-auto">
-          <div className="w-2 h-2 rounded-full bg-[#D7FF00] animate-pulse shadow-[0_0_10px_#D7FF00]" />
-          <span className="font-medium text-sm tracking-wide">Activité sauvegardée <span className="font-bold text-[#D7FF00] ml-1">+{xp} XP</span></span>
+          <div className="w-2 h-2 rounded-full bg-[#C4D600] animate-pulse shadow-[0_0_10px_#D7FF00]" />
+          <span className="font-medium text-sm tracking-wide">Activité sauvegardée <span className="font-bold text-[#C4D600] ml-1">+{xp} XP</span></span>
         </div>
       ), {
         duration: 4000,
@@ -35,7 +35,7 @@ export default function Home() {
 
   // Hardcoded profile data for presentation
   const profile = {
-    first_name: "Pierre",
+    first_name: "Victoire",
     total_distance_km: 12, // Matches "Objectif du mois" progress
     total_runs: 42,
     total_time_seconds: 153000, // approx 42.5 hours
@@ -63,10 +63,10 @@ export default function Home() {
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full border-2 border-primary overflow-hidden shadow-md">
-              <img src="dist/images/profile-picture.png" alt="Profile" className="w-full h-full object-cover" />
+              <img src="dist/images/individual-avatar.png" alt="Profile" className="w-full h-full object-cover" />
             </div>
             <span className="font-medium text-lg">
-              Salut, <span className="font-bold text-primary dark:text-terrun-lime-500">{firstName}</span> 👋
+              Salut, <span className="font-bold text-[#9AA800] dark:text-terrun-lime-500">{firstName}</span> 👋
             </span>
           </div>
           <button className="relative p-2 hover:bg-muted/50 rounded-full transition-colors">
@@ -194,13 +194,14 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Bouton carte */}
+              {/* Bouton carte
               <button
-                className="absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg"
+                className="absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#000] text-primary-foreground shadow-lg"
                 aria-label="Ouvrir la carte"
               >
-                <MapPin className="h-5 w-5" />
+                <MapPin className="h-5 w-5 text-white" />
               </button>
+              */}
             </div>
 
             {/* Légende */}

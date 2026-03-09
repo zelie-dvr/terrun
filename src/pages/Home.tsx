@@ -63,7 +63,7 @@ export default function Home() {
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full border-2 border-primary overflow-hidden shadow-md">
-              <img src="dist/images/individual-avatar.png" alt="Profile" className="w-full h-full object-cover" />
+              <img src="/images/individual-avatar.png" alt="Profile" className="w-full h-full object-cover" />
             </div>
             <span className="font-medium text-lg">
               Salut, <span className="font-bold text-[#9AA800] dark:text-terrun-lime-500">{firstName}</span> 👋
@@ -109,7 +109,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full flex items-center justify-center">
-              <img src="../public/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
+              <img src="/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium mb-1">{Number(profile.total_distance_km).toFixed(0)}/{Number(profile.monthly_goal_km).toFixed(0)} KM</p>
@@ -128,7 +128,7 @@ export default function Home() {
           </div>
           <div className="flex gap-4 overflow-x-auto hide-scrollbar -mx-4 px-4 pb-2">
             <ChallengeCard
-              icon={<img src="../public/images/Run.svg" />}
+              icon={<img src="/images/Run.svg" />}
               title="Explorer 5 parcours"
               description="Valider 5 circuits créés par la communauté."
               color="from-orange-500/20 to-orange-500/5"
@@ -137,7 +137,7 @@ export default function Home() {
               iconBg="bg-orange-500/20"
             />
             <ChallengeCard
-              icon={<img src="../public/images/Team.svg" />}
+              icon={<img src="/images/Team.svg" />}
               title="Esprit d'équipe"
               description="Inviter un ami à rejoindre Terrun ou courir à deux."
               color="from-blue-500/20 to-blue-500/5"

@@ -8,7 +8,7 @@ type ActivityType = {
   distance: string;
   duration: string;
   location: string;
-  pace: string; 
+  pace: string;
   date: string;
   xp: number;
   status: string;
@@ -128,7 +128,7 @@ export default function Profile() {
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-4xl">
                 <img
-                  src="dist/images/individual-avatar.png"
+                  src="/images/individual-avatar.png"
                   alt="Profile"
                   className="w-26 h-26 object-cover rounded-full"
                 />
@@ -154,10 +154,10 @@ export default function Profile() {
 
         {/* Titre de niveau */}
         <div className="flex flex-col items-center mb-3">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#C6D300] to-[#9AA800] drop-shadow-lg">
-              Explorateur
-            </h2>
-          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#C6D300] to-[#9AA800] drop-shadow-lg">
+            Explorateur
+          </h2>
+        </div>
 
         {/* Badges */}
         <div className="flex flex-wrap gap-2 justify-center mb-6">
@@ -174,7 +174,7 @@ export default function Profile() {
         {/* Objectif du mois */}
         <div className="flex items-center gap-3 mb-6">
           <div className="w-8 h-8 rounded-full flex items-center justify-center">
-            <img src="dist/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
+            <img src="/images/icon_objectif.svg" className="w-6 h-6" alt="Target icon" />
           </div>
           <div className="flex-1">
             <p className="text-sm font-medium mb-1">
@@ -232,7 +232,7 @@ export default function Profile() {
             className="w-full flex items-center justify-between p-3 mb-2 hover:bg-muted rounded-xl transition-colors"
           >
             <div className="flex items-center gap-2">
-              <img src="dist/images/icon-solo.svg" alt="Carte interactive" className="block ml-1 w-4 object-cover" />
+              <img src="/images/icon-solo.svg" alt="Carte interactive" className="block ml-1 w-4 object-cover" />
               <span className="font-display text-lg">INDIVIDUEL</span>
             </div>
             <ChevronRight className="w-5 h-5" />
@@ -243,7 +243,7 @@ export default function Profile() {
             className="w-full flex items-center justify-between p-3 hover:bg-muted rounded-xl transition-colors"
           >
             <div className="flex items-center gap-2">
-              <img src="dist/images/icon-team.svg" alt="Carte interactive" className="block w-5 object-cover" />
+              <img src="/images/icon-team.svg" alt="Carte interactive" className="block w-5 object-cover" />
               <span className="font-display text-lg">ÉQUIPE</span>
             </div>
             <ChevronRight className="w-5 h-5" />
@@ -365,9 +365,9 @@ function SoloStats({ onBack }: { onBack: () => void }) {
 
   const [showAllSeasons, setShowAllSeasons] = useState(false);
   const displayedSeasons = showAllSeasons ? seasonHistory : seasonHistory.slice(0, 2);
-  
+
   return (
-    
+
     <MobileLayout>
       <div className="p-4 animate-fade-in flex flex-col gap-4">
 
@@ -416,15 +416,15 @@ function SoloStats({ onBack }: { onBack: () => void }) {
           </div>
 
           {seasonHistory.length > 2 && (
-          <div className="flex justify-end mt-2">
-            <button
-              onClick={() => setShowAllSeasons(!showAllSeasons)}
-              className="text-xs text-gray-500 font-medium hover:text-[#000]"
-            >
-              {showAllSeasons ? "Voir moins" : "Voir plus"}
-            </button>
-          </div>
-        )}
+            <div className="flex justify-end mt-2">
+              <button
+                onClick={() => setShowAllSeasons(!showAllSeasons)}
+                className="text-xs text-gray-500 font-medium hover:text-[#000]"
+              >
+                {showAllSeasons ? "Voir moins" : "Voir plus"}
+              </button>
+            </div>
+          )}
         </section>
 
         {/* Records
@@ -521,91 +521,91 @@ function TeamTab({ onBack }: { onBack: () => void }) {
   }, []);
   return (
     <MobileLayout>
-    <div className="flex flex-col gap-6 p-4 animate-fade-in">
-      {/* Header */}
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex flex-col gap-6 p-4 animate-fade-in">
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-2">
           <button onClick={onBack} className="flex items-center gap-2">
             <ArrowLeft className="w-5 h-5" />
             <span className="font-display text-xl">TEAM</span>
           </button>
         </div>
 
-      {/* Team header */}
-      <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4">
-        <div className="mb-2 flex items-center gap-2">
-          <Users className="h-5 w-5 text-accent-foreground" />
-          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
-            Contribution ce mois-ci
-          </h2>
+        {/* Team header */}
+        <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4">
+          <div className="mb-2 flex items-center gap-2">
+            <Users className="h-5 w-5 text-accent-foreground" />
+            <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">
+              Contribution ce mois-ci
+            </h2>
+          </div>
+          <p className="mb-4 text-xs text-muted-foreground">Equipe : IngeMedia</p>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
+              <Zap className="h-4 w-4 text-accent" />
+              <span className="text-lg font-black text-foreground">{monthContribution.points}</span>
+              <span className="text-[9px] font-medium uppercase text-muted-foreground">RUNITS</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
+              <Map className="h-4 w-4 text-accent" />
+              <span className="text-lg font-black text-foreground">{monthContribution.tiles}</span>
+              <span className="text-[9px] font-medium uppercase text-muted-foreground">kilomètres</span>
+            </div>
+            <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
+              <BarChart3 className="h-4 w-4 text-accent" />
+              <span className="text-lg font-black text-foreground">{monthContribution.internalRank}</span>
+              <span className="text-[9px] font-medium uppercase text-muted-foreground">Rang interne</span>
+            </div>
+          </div>
         </div>
-        <p className="mb-4 text-xs text-muted-foreground">Equipe : IngeMedia</p>
-        <div className="grid grid-cols-3 gap-3">
-          <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
-            <Zap className="h-4 w-4 text-accent" />
-            <span className="text-lg font-black text-foreground">{monthContribution.points}</span>
-            <span className="text-[9px] font-medium uppercase text-muted-foreground">RUNITS</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
-            <Map className="h-4 w-4 text-accent" />
-            <span className="text-lg font-black text-foreground">{monthContribution.tiles}</span>
-            <span className="text-[9px] font-medium uppercase text-muted-foreground">kilomètres</span>
-          </div>
-          <div className="flex flex-col items-center gap-1 rounded-xl bg-card p-3">
-            <BarChart3 className="h-4 w-4 text-accent" />
-            <span className="text-lg font-black text-foreground">{monthContribution.internalRank}</span>
-            <span className="text-[9px] font-medium uppercase text-muted-foreground">Rang interne</span>
-          </div>
-        </div>
-      </div>
 
-      {/* Team stats summary */}
-      <section aria-label="Statistiques equipe">
-        <div className="mb-3 flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-accent" />
-          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Statistiques équipe</h2>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
-            <span className="text-2xl font-black text-foreground">1 690</span>
-            <span className="text-[10px] font-medium text-muted-foreground">RUNITS total équipe</span>
+        {/* Team stats summary */}
+        <section aria-label="Statistiques equipe">
+          <div className="mb-3 flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-accent" />
+            <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Statistiques équipe</h2>
           </div>
-          <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
-            <span className="text-2xl font-black text-foreground">169</span>
-            <span className="text-[10px] font-medium text-muted-foreground">KM total équipe</span>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
+              <span className="text-2xl font-black text-foreground">1 690</span>
+              <span className="text-[10px] font-medium text-muted-foreground">RUNITS total équipe</span>
+            </div>
+            <div className="flex flex-col gap-1 rounded-xl border border-border bg-card p-4">
+              <span className="text-2xl font-black text-foreground">169</span>
+              <span className="text-[10px] font-medium text-muted-foreground">KM total équipe</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Performance history */}
-      <section aria-label="Historique des performances en team">
-        <div className="mb-3 flex items-center gap-2">
-          <History className="h-4 w-4 text-accent" />
-          <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Historique performances</h2>
-        </div>
-        <div className="overflow-hidden rounded-2xl border border-border">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-b border-border bg-secondary">
-                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Mois</th>
-                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">RUNITS</th>
-                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">KM</th>
-                <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Rang</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teamPerformance.map((perf, i) => (
-                <tr key={i} className="border-b border-border last:border-0">
-                  <td className="px-4 py-3 font-semibold text-foreground">{perf.month}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{perf.points}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{perf.tiles}</td>
-                  <td className="px-4 py-3 font-bold text-foreground">{perf.rank}</td>
+        {/* Performance history */}
+        <section aria-label="Historique des performances en team">
+          <div className="mb-3 flex items-center gap-2">
+            <History className="h-4 w-4 text-accent" />
+            <h2 className="text-sm font-medium uppercase tracking-wide text-foreground">Historique performances</h2>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-border">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-border bg-secondary">
+                  <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Mois</th>
+                  <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">RUNITS</th>
+                  <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">KM</th>
+                  <th className="px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Rang</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+              </thead>
+              <tbody>
+                {teamPerformance.map((perf, i) => (
+                  <tr key={i} className="border-b border-border last:border-0">
+                    <td className="px-4 py-3 font-semibold text-foreground">{perf.month}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{perf.points}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{perf.tiles}</td>
+                    <td className="px-4 py-3 font-bold text-foreground">{perf.rank}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </MobileLayout>
   );
 }

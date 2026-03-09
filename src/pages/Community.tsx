@@ -84,7 +84,7 @@ const leaderboardData: Record<RankingTab, Record<Geography, { rank: number; name
       { rank: 4, name: "AlpsClimber", xp: 10500, tier: "sentinelle", trend: "down" },
       { rank: 5, name: "Provencal", xp: 9800, tier: "sentinelle", trend: "stable" },
       { rank: 6, name: "AzurSprinter", xp: 9200, tier: "sentinelle", trend: "up" },
-      { rank: 12, name: "Victoire", xp: 4500, avatar:"dist/images/individual-avatar.png", tier: "eclaireur", trend: "up" },
+      { rank: 12, name: "Victoire", xp: 4500, avatar: "/images/individual-avatar.png", tier: "eclaireur", trend: "up" },
     ],
     national: [
       { rank: 1, name: "ParisMarathoner", xp: 150000, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Paris", tier: "souverain", trend: "stable" },
@@ -219,11 +219,11 @@ function FriendsTab() {
         >
           {/* Avatar */}
           <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-bold text-foreground">
-          <img
-  src={friend.avatar}
-  alt={friend.name}
-  className="w-full h-full object-cover rounded-full"
-/>
+            <img
+              src={friend.avatar}
+              alt={friend.name}
+              className="w-full h-full object-cover rounded-full"
+            />
 
             {friend.isOnline && (
               <div className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-card bg-[#C4D600]" />
@@ -349,13 +349,13 @@ function TeamTab() {
                 <span className="font-display text-2xl text-[#000] w-6 text-center italic">#{contributor.rank}</span>
 
                 <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-[#C4D600]/30">
-                  <img
-                    src={contributor.avatar}
-                    alt={contributor.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-[#C4D600]/30">
+                    <img
+                      src={contributor.avatar}
+                      alt={contributor.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
 
                   <span className="font-bold text-base">{contributor.name}</span>
                 </div>
@@ -644,8 +644,8 @@ function RankingTab({
         {second && (
           <div className="flex flex-col items-center z-10 w-[28%]">
             <span>
-                <img src="dist/images/Couronne-02.svg" alt="CouronneArgent" className="w-10 mb-2"/>
-              </span>
+              <img src="/images/Couronne-02.svg" alt="CouronneArgent" className="w-10 mb-2" />
+            </span>
             <div className="w-16 h-16 rounded-full border-2 border-zinc-300 p-0.5 bg-background overflow-hidden relative shadow-md grayscale-[0.2]">
               <img
                 src={getAvatarUrl(second.avatar, second.name)}
@@ -667,7 +667,7 @@ function RankingTab({
           first && (
             <div className="flex flex-col items-center z-20 w-[35%] -mb-2">
               <span>
-                <img src="dist/images/Couronne-01.svg" alt="CouronneDoree" className="w-11 mb-2"/>
+                <img src="/images/Couronne-01.svg" alt="CouronneDoree" className="w-11 mb-2" />
               </span>
               <div className="w-24 h-24 rounded-full border-[3px] border-[#C4D600] p-1 bg-background overflow-hidden relative shadow-[0_0_25px_rgba(215,255,0,0.4)]">
                 <img
@@ -690,7 +690,7 @@ function RankingTab({
           third && (
             <div className="flex flex-col items-center z-10 w-[28%]">
               <span>
-                <img src="dist/images/Couronne-03.svg" alt="CouronneRouge" className="w-10 mb-2"/>
+                <img src="/images/Couronne-03.svg" alt="CouronneRouge" className="w-10 mb-2" />
               </span>
               <div className="w-16 h-16 rounded-full border-2 border-zinc-300 p-0.5 bg-background overflow-hidden relative shadow-md grayscale-[0.2]">
                 <img

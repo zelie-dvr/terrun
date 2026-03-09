@@ -40,7 +40,7 @@ export function BottomNav() {
             <NavLink to="/run">
               <div className="w-16 h-16 rounded-full bg-[#C6D300] flex items-center justify-center shadow-[0_0_20px_#C6D300] transform transition-transform active:scale-90 relative z-20 group border-[4px] border-[#f2f2f2] dark:border-[#09090b]">
                 {/* Runner Icon */}
-                <img src="/images/icon_Terrun.svg" className="w-10 h-10" alt="Target icon" />
+                <img src="/images/icon-Terrun.svg" className="w-10 h-10" alt="Target icon" />
               </div>
             </NavLink>
           </div>

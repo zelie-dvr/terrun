@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/hooks/useAuth";
 
 import Home from "./pages/Home";
 import Community from "./pages/Community";
@@ -34,31 +35,33 @@ const AppRoutes = () => (
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="max-w-md mx-auto relative min-h-screen shadow-2xl bg-black">
-          <Toaster />
-          <Sonner
-            position="bottom-center"
-            className="!fixed !bottom-32 !left-1/2 !-translate-x-1/2 !z-[999] !w-[90%] !max-w-[350px] pointer-events-none"
-            toastOptions={{
-              className: "pointer-events-auto",
-              style: {
-                marginBottom: "0",
-                width: "100%",
-              },
-              classNames: {
-                toast:
-                  "bg-black/90 border-white/10 text-white shadow-2xl backdrop-blur-md rounded-2xl justify-center",
-              },
-            }}
-          />
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </div>
-      </ThemeProvider>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <div className="max-w-md mx-auto relative min-h-screen shadow-2xl bg-black">
+            <Toaster />
+            <Sonner
+              position="bottom-center"
+              className="!fixed !bottom-32 !left-1/2 !-translate-x-1/2 !z-[999] !w-[90%] !max-w-[350px] pointer-events-none"
+              toastOptions={{
+                className: "pointer-events-auto",
+                style: {
+                  marginBottom: "0",
+                  width: "100%",
+                },
+                classNames: {
+                  toast:
+                    "bg-black/90 border-white/10 text-white shadow-2xl backdrop-blur-md rounded-2xl justify-center",
+                },
+              }}
+            />
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+              <AppRoutes />
+            </BrowserRouter>
+          </div>
+        </ThemeProvider>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

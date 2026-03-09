@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MobileLayout } from "@/components/layout/MobileLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { toast } from "sonner";
 import StaticWebMap from "@/components/map/StaticWebMap";
 import { Coordinate } from "@/lib/gridSystem";
@@ -62,12 +62,25 @@ export default function RunSummary() {
     setSaving(false);
   };
 
+  const handleDiscard = () => {
+    if (window.confirm("Voulez-vous vraiment quitter sans sauvegarder votre course ?")) {
+      navigate("/");
+    }
+  };
+
   return (
     <MobileLayout hideNav>
-      <div className="min-h-screen bg-background p-4 animate-fade-in">
+      <div className="min-h-screen bg-background p-4 animate-fade-in relative">
+        <button
+          onClick={handleDiscard}
+          className="absolute top-6 right-6 z-10 p-2 bg-black/50 backdrop-blur-md rounded-full text-white hover:bg-black/70 transition-colors"
+          title="Quitter sans sauvegarder"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
         {/* Map preview */}
-        {/* Map preview */}
-        <div className="rounded-2xl overflow-hidden h-64 bg-muted mb-6 relative border border-border">
+        <div className="rounded-2xl overflow-hidden h-64 bg-muted mb-6 relative border border-border mt-2">
           {runData?.route && runData.route.length > 0 ? (
             <StaticWebMap
               route={runData.route}
